@@ -194,6 +194,13 @@ hook.Add( "guthscpbase:config", "vkxscp173", function()
                         decimals = 2,
                     },
                     {
+                        type = "NumWang",
+                        name = "Distance Unit",
+                        id = "blink_distance_unit",
+                        desc = "Maximum distance from a SCP-173 instance where you can blink (similar to SCP:SL's system). 0 to disable the distance condition. 1024 is a good value.",
+                        default = 1024,
+                    },
+                    {
                         type = "CheckBox",
                         name = "Realistic Blink",
                         id = "realistic_blink",

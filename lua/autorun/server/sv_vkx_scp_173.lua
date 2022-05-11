@@ -89,7 +89,6 @@ end )
 
 --  HUD blink
 local global_blink_count = 0
-local blink_distance = CreateConVar( "vkx_scp173_blink_distance", "0", FCVAR_ARCHIVE, "When the blinking system is enabled, represents the maximum distance (in game units) from a SCP-173 instance where you can blink (similar to SCP:SL's system). 0 to disable the distance condition. 1024 is a good value." )
 timer.Create( "vkxscp173:blink", .5, 0, function()
     if GuthSCP.Config.vkxscp173.blink_need_scp_173 and #scps_173 == 0 then return end
 
@@ -106,12 +105,11 @@ timer.Create( "vkxscp173:blink", .5, 0, function()
 
         --  apply counter
         GuthSCP.setBlinkCounter( v, is_global_blink and global_blink_count or ( GuthSCP.getBlinkCounter( v ) - 1 ) % max_blink_count )
-        --debugoverlay.Text( v:GetPos() + Vector( 0, 0, 50 ), "Counter: " .. GuthSCP.getBlinkCounter( v ), GuthSCP.Config.vkxscp173.blink_update_timer )
-        
+
         --  screen blink effect
         local n = GuthSCP.getBlinkCounter( v )
         if n == 0 and v:GetInfoNum( "vkx_scp173_blink", 1 ) == 1 then
-            local can_blink, dist = true, blink_distance:GetInt()
+            local can_blink, dist = true, GuthSCP.Config.vkxscp173.blink_distance_unit
             if dist > 0 then
                 can_blink = false
                 for i, scp in ipairs( scps_173 ) do
