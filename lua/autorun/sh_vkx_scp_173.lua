@@ -34,12 +34,19 @@ end
 
 function GuthSCP.isLookingAt( ply, ent )
     if not IsValid( ply ) then return false end
+    if not ply:IsPlayer() then 
+        --  implementation for NPCs & NextBots
+        if CLIENT then
+            return false
+        end
+    end  
 
     local pos = ent:GetPos()
     local min, max = ent:GetModelBounds()
     local tall = Vector( 0, 0, max.z - min.z )
 
-    local vision_range = math.cos( math.rad( ( ply:GetFOV() + 25 ) / 2 ) )
+    local fov = ( ply:IsPlayer() and ply:GetFOV() or 90 ) + 25
+    local vision_range = math.cos( math.rad( fov / 2 ) )
 
     local dot = ply:GetAimVector():Dot( ( pos - ply:GetPos() ):GetNormal() )
     return dot > 0 and dot > vision_range and ( ply:IsLineOfSightClear( pos ) or ply:IsLineOfSightClear( pos + tall ) )
@@ -145,6 +152,13 @@ hook.Add( "guthscpbase:config", "vkxscp173", function()
                         name = "Immortal",
                         id = "immortal",
                         desc = "If checked, SCP-173 can't take damage",
+                        default = true,
+                    },
+                    {
+                        type = "CheckBox",
+                        name = "Disable NPC",
+                        id = "disable_npc",
+                        desc = "If unchecked, NPCs will neither blink nor freeze 173 even though looking at him",
                         default = true,
                     },
                     {

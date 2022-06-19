@@ -92,36 +92,16 @@ function SWEP:PrimaryAttack()
 	if not SERVER then return end
 
 	local ply = self:GetOwner()
-
-	--	> Get all entities around player
-	--[[ local entities = ents.FindInSphere( ply:GetPos(), GuthSCP.Config.vkxscp173.distance_unit ) -- distance
-	if #entities == 0 then return end
-
-	--	> Get players targets
-	local target, min_dist = nil, math.huge
-	for i, v in ipairs( entities ) do
-		if v == ply then continue end
-		if IsValid( v ) and v:IsPlayer() then
-			if GuthSCP.isSCP and GuthSCP.isSCP( v ) then continue end
-			if not GuthSCP.canHitTarget( ply, v ) then continue end
-
-			local dist = ply:GetPos():DistToSqr( v:GetPos() )
-			if dist < min_dist then
-				target = v
-				min_dist = dist
-			end
-		end
-	end ]]
-
 	local tr = ply:GetEyeTrace()
 	local target = tr.Entity
 	if not IsValid( target ) then return end
 
 	--  kill target
-	if target:IsPlayer() and target:GetPos():DistToSqr( ply:GetPos() ) <= GuthSCP.Config.vkxscp173.distance_unit_sqr then
+	if target:IsPlayer() or target:IsNPC() or target:IsNextBot() then
+		if target:GetPos():DistToSqr( ply:GetPos() ) > GuthSCP.Config.vkxscp173.distance_unit_sqr then return end
 		if GuthSCP.isSCP( target ) then return end
 
-		if target:Alive() then
+		if target:Health() > 0 then --  not using Player/Alive caused not existing on NPCs
 			if GuthSCP.isSCP173Looked( ply ) then
 				send_target( ply, target )
 

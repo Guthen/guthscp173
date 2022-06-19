@@ -32,13 +32,14 @@ hook.Add( "PreDrawHalos", "vkxscp173:hud", function()
     local target = ply:GetEyeTrace().Entity
 
     for i, v in ipairs( ents.FindInSphere( ply:GetPos(), GuthSCP.Config.vkxscp173.distance_unit ) ) do
-        if not v:IsPlayer() or not v:Alive() then continue end
-        if GuthSCP.isSCP and GuthSCP.isSCP( v ) then continue end
+        if v == ply then continue end 
+        if not ( v:IsPlayer() and v:Alive() ) and not ( ( v:IsNPC() or v:IsNextBot() ) and v:Health() >= 0 ) then continue end
+        if GuthSCP.isSCP( v ) then continue end
 
         if not ( v == target ) and not ( v == choose_target ) then
             local color = red
             if not GuthSCP.isSCP173Looked( ply ) and ply:GetPos():DistToSqr( v:GetPos() ) <= GuthSCP.Config.vkxscp173.distance_unit_sqr then
-                color = ( not GuthSCP.isLookingAt( v, ply ) or GuthSCP.isBlinking( v ) ) and green or red
+                color = ( GuthSCP.isBlinking( v ) or not GuthSCP.isLookingAt( v, ply ) ) and green or red
             end
             halo.Add( { v }, color )
         else
@@ -76,7 +77,7 @@ hook.Add( "PostDrawOpaqueRenderables", "vkxscp173:new_pos", function()
     if not swep.ShowDestinationHUD then return end
 
     local tr = ply:GetEyeTrace()
-    if tr.Entity:IsPlayer() and not next_position then return end
+    if ( tr.Entity:IsPlayer() or tr.Entity:IsNPC() or tr.Entity:IsNextBot() ) and not next_position then return end
 
     --	color
     local pos, ang = next_position or tr.HitPos, Angle( 0, ply:GetAngles().y, 0 )

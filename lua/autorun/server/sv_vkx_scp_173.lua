@@ -4,6 +4,24 @@ end
 
 util.AddNetworkString( "vkxscp173:action" )
 
+local npcs = {}
+hook.Add( "OnEntityCreated", "vkxscp173:retrieve_npcs", function( ent )
+    if not IsValid( ent ) or ( not ent:IsNPC() and not ent:IsNextBot() ) then return end
+
+    npcs[#npcs + 1] = ent
+end )
+
+hook.Add( "EntityRemoved", "vkxscp173:remove_npcs", function( ent )
+    if not IsValid( ent ) or ( not ent:IsNPC() and not ent:IsNextBot() ) then return end
+
+    for i, v in ipairs( npcs ) do
+        if v == ent then
+            table.remove( npcs, i )
+            break
+        end
+    end
+end )
+
 local scps_173 = {}
 hook.Add( "Think", "vkxscp173:think", function()
     for _, v in ipairs( scps_173 ) do
@@ -11,14 +29,24 @@ hook.Add( "Think", "vkxscp173:think", function()
         
         --  should 173 be freezed?
         local freeze = false
-
+        
+        --  players looking at 173s
         for _, ply in ipairs( player.GetAll() ) do
             if ply == v then continue end
             if not ply:Alive() then continue end
             if GuthSCP.isSCP and GuthSCP.isSCP( ply ) then continue end
+            if not GuthSCP.isLookingAt( ply, v ) or GuthSCP.isBlinking( ply ) then continue end
 
-            local look = GuthSCP.isLookingAt( ply, v )
-            if look and not GuthSCP.isBlinking( ply ) then
+            freeze = true
+            break
+        end
+
+        --  npcs looking at 173s
+        if not GuthSCP.Config.vkxscp173.disable_npc and not freeze then
+            for i, npc in ipairs( npcs ) do
+                if npc:Health() <= 0 then continue end
+                if not GuthSCP.isLookingAt( npc, v ) or GuthSCP.isBlinking( npc ) then continue end
+
                 freeze = true
                 break
             end
@@ -61,10 +89,6 @@ hook.Add( "OnPlayerChangedTeam", "vkxscp173:un_freeze", function( ply, old_team,
     end
 end )
 
---[[ hook.Add( "PlayerDeath", "vkxscp173:un_freeze", function( ply )
-    ply:Freeze( false )
-end ) ]]
-
 --  oooiiiiinnnnngggr
 local can_use = true
 hook.Add( "PlayerUse", "zzz_vkxscp173:use", function( ply, ent ) 
@@ -99,21 +123,22 @@ timer.Create( "vkxscp173:blink", .5, 0, function()
         global_blink_count = ( global_blink_count - 1 ) % max_blink_count
     end
 
-    for _, v in pairs( player.GetAll() ) do
-        if not v:Alive() then continue end
-        if GuthSCP.isSCP and GuthSCP.isSCP( v ) then continue end  --  don't count on SCPs
+    --  blink on players
+    for _, ply in ipairs( player.GetAll() ) do
+        if not ply:Alive() then continue end
+        if GuthSCP.isSCP173( ply ) or GuthSCP.isSCP( ply ) then continue end  --  don't count on SCPs
 
         --  apply counter
-        GuthSCP.setBlinkCounter( v, is_global_blink and global_blink_count or ( GuthSCP.getBlinkCounter( v ) - 1 ) % max_blink_count )
+        GuthSCP.setBlinkCounter( ply, is_global_blink and global_blink_count or ( GuthSCP.getBlinkCounter( ply ) - 1 ) % max_blink_count )
 
         --  screen blink effect
-        local n = GuthSCP.getBlinkCounter( v )
-        if n == 0 and v:GetInfoNum( "vkx_scp173_blink", 1 ) == 1 then
+        local n = GuthSCP.getBlinkCounter( ply )
+        if n == 0 and ply:GetInfoNum( "vkx_scp173_blink", 1 ) == 1 then
             local can_blink, dist = true, GuthSCP.Config.vkxscp173.blink_distance_unit
             if dist > 0 then
                 can_blink = false
                 for i, scp in ipairs( scps_173 ) do
-                    if v:GetPos():Distance( scp:GetPos() ) <= dist then
+                    if ply:GetPos():Distance( scp:GetPos() ) <= dist then
                         can_blink = true
                         break
                     end
@@ -121,8 +146,18 @@ timer.Create( "vkxscp173:blink", .5, 0, function()
             end
 
             if can_blink then
-                v:ScreenFade( SCREENFADE.IN, Color( 0, 0, 0 ), .1, GuthSCP.Config.vkxscp173.blink_update_timer )
+                ply:ScreenFade( SCREENFADE.IN, Color( 0, 0, 0 ), .1, GuthSCP.Config.vkxscp173.blink_update_timer )
             end
+        end
+    end
+
+    --  blink on npcs
+    if not GuthSCP.Config.vkxscp173.disable_npc then
+        for _, npc in ipairs( npcs ) do
+            if npc:Health() <= 0 then continue end
+
+            --  apply counter
+            GuthSCP.setBlinkCounter( npc, is_global_blink and global_blink_count or ( GuthSCP.getBlinkCounter( npc ) - 1 ) % max_blink_count )
         end
     end
 end )
