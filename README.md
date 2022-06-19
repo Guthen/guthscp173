@@ -30,6 +30,8 @@ Be sure to have installed [Guthen SCP Content](https://steamcommunity.com/worksh
 
 Otherwise, check the configured sounds paths in the configuration menu. 
 
+### "NPCs don't freeze me (as 173)!"
+You have to uncheck the variable `Disable NPC` in the configuration menu (again `guthscpbase` in your game's console).
 
 ## Compatible HUDs
 List of HUDs compatible with the blinking system :
