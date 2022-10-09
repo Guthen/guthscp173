@@ -158,7 +158,7 @@ function SWEP:SecondaryAttack()
 
 	--  check trace pos validity
 	local pos = ply:GetEyeTrace().HitPos
-	if ply:GetPos():DistToSqr( pos ) > guthscp.configs.guthscp173.distance_unit_sqr or guthscp.world.is_in_ground( pos ) then return end
+	if ply:GetPos():DistToSqr( pos ) > guthscp.configs.guthscp173.distance_unit_sqr or not guthscp.world.is_ground( pos ) then return end
 
 	if guthscp173.is_scp_173_looked( ply ) then 
 		--  schedule next position
