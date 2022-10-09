@@ -5,10 +5,10 @@ util.AddNetworkString( "guthscp173:action" )
 local scps_173 = {}
 hook.Add( "Think", "guthscp173:think", function()
     for _, v in ipairs( scps_173 ) do
-        if not IsValid( v ) or not v:Alive() then continue end
+        if not v:Alive() then continue end
         
         --  should 173 be freezed
-        local freeze = false
+        local should_freeze = false
         
         --  check players looking at him
         for _, ply in ipairs( player.GetAll() ) do
@@ -17,61 +17,31 @@ hook.Add( "Think", "guthscp173:think", function()
             if guthscp.is_scp and guthscp.is_scp( ply ) then continue end
             if guthscp173.is_blinking( ply ) or not guthscp173.is_looking_at( ply, v ) then continue end
 
-            freeze = true
+            should_freeze = true
             break
         end
 
         --  check npcs looking at him
-        if not guthscp.configs.guthscp173.disable_npc and not freeze then
+        if not guthscp.configs.guthscp173.disable_npc and not should_freeze then
             for i, npc in ipairs( guthscp.get_npcs() ) do
                 if npc:Health() <= 0 then continue end
                 if not guthscp173.is_looking_at( npc, v ) or guthscp173.is_blinking( npc ) then continue end
 
-                freeze = true
+                should_freeze = true
                 break
             end
         end
 
         --  update on difference
-        if not ( freeze == v:GetNWBool( "guthscp173:looked", false ) ) then 
-            v:SetNWBool( "guthscp173:looked", freeze )
+        if not ( should_freeze == v:GetNWBool( "guthscp173:looked", false ) ) then 
+            v:SetNWBool( "guthscp173:looked", should_freeze )
         end
 
         --  update looking angle when not looked at
-        if not freeze and not guthscp.configs.guthscp173.disable_directional_movement then
+        if not should_freeze and not guthscp.configs.guthscp173.disable_directional_movement then
             v:SetNWAngle( "guthscp173:eye_angles", v:EyeAngles() )
         end
     end
-end )
-
---  refresh scps list at a fixed interval
---  TODO: make a global system for managing scp players
-local function refresh_scps_list()
-    for i, v in ipairs( scps_173 ) do
-        if IsValid( v ) then
-            v:Freeze( false )
-        end
-    end
-
-    scps_173 = {}
-    for i, v in ipairs( player.GetAll() ) do
-        if guthscp173.is_scp_173( v ) then 
-            scps_173[#scps_173 + 1] = v
-        end
-    end
-end
-timer.Create( "guthscp173:refresh", 10, 0, refresh_scps_list )
-
---  unfreeze on team change and add to SCP-173 table
-hook.Add( "OnPlayerChangedTeam", "guthscp173:un_freeze", function( ply, old_team, new_team )
-    if guthscp173.is_scp_173( ply ) then
-        scps_173[#scps_173 + 1] = ply
-    elseif guthscp173.is_scp_173( ply ) then 
-        ply:SetNWBool( "guthscp173:looked", false )
-        --ply:Freeze( false )
-        refresh_scps_list()
-    end
-    --  TODO: check this ^
 end )
 
 --  oooiiiiinnnnngggr
@@ -98,6 +68,10 @@ end )
 --  HUD blink
 local global_blink_count = 0
 timer.Create( "guthscp173:blink", .5, 0, function()
+    --  refresh list
+    scps_173 = guthscp173.get_scps_173()
+
+    --  check if blink should happen
     if guthscp.configs.guthscp173.blink_need_scp_173 and #scps_173 == 0 then return end
 
     --  decrease global blink counter

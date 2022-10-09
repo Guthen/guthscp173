@@ -92,10 +92,12 @@ hook.Add( "PostDrawOpaqueRenderables", "guthscp173:new_pos", function()
     --	alpha
     render.SetBlend( .1 )
 
-    --	model
+    --	setup model
     preview_model:SetRenderOrigin( next_position or pos )
     preview_model:SetRenderAngles( ang )
     preview_model:SetModel( ply:GetModel() )
+
+    --  draw model
     preview_model:DrawModel()
 end )
 

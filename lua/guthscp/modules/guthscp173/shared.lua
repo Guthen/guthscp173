@@ -1,9 +1,27 @@
 local guthscp173 = guthscp.modules.guthscp173
 
-function guthscp173.is_scp_173( ply )
-    if not IsValid( ply ) then return end
+--  scps filter
+guthscp173.filter = guthscp.players_filter:new( "guthscp173" )
+if SERVER then
+	guthscp173.filter:listen_disconnect()
+	guthscp173.filter:listen_weapon_users( "guthscp_173" )  --  being SCP-173 just mean a player having the weapon 
 
-    return ply:HasWeapon( "vkx_scp_173" )
+    guthscp173.filter.event_player_removed:add_listener( "guthscp173:unfreeze", function( ply )
+        ply:SetNWBool( "guthscp173:looked", false )
+    end )
+end
+
+function guthscp173.get_scps_173()
+	return guthscp173.filter:get_players_list()
+end
+
+--  functions
+function guthscp173.is_scp_173( ply )
+    if CLIENT and ply == nil then
+		ply = LocalPlayer() 
+	end
+
+    return guthscp173.filter:is_player_in( ply )
 end
 
 function guthscp173.is_scp_173_looked( ply )
@@ -54,7 +72,7 @@ function guthscp173.get_blink_counter( ply )
     return blink_counter
 end
 
-
+--  handle movement
 hook.Add( "SetupMove", "guthscp173:no_move", function( ply, mv, cmd )
     if not guthscp173.is_scp_173( ply ) then return end
     if ply:GetMoveType() == MOVETYPE_NOCLIP then return end --  allow noclip
@@ -63,7 +81,7 @@ hook.Add( "SetupMove", "guthscp173:no_move", function( ply, mv, cmd )
 
     --  disable jump
     if guthscp.configs.guthscp173.disable_jump or looked then
-        mv:SetButtons( bit.bxor( mv:GetButtons(), IN_JUMP ) )
+        mv:SetButtons( bit.band( mv:GetButtons(), bit.bnot( IN_JUMP ) ) )
     end
 
     --  disable directional movement

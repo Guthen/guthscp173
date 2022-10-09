@@ -138,7 +138,7 @@ MODULE.menu = {
 				type = "CheckBox",
 				name = "Need SCP-173",
 				id = "blink_need_scp_173",
-				desc = "If checked, the blink system will work only if at least one SCP-173 is on the server. Else, the blink system work everytime",
+				desc = "If checked, the blink system will work only if at least one SCP-173 is on the server. Else, the blink system work everytime. Note that it WILL NOT work if 'Distance Unit' is greater than 0.",
 				default = true,
 			},
 			{
@@ -196,7 +196,7 @@ MODULE.menu = {
 				if form.realistic_blink and not guthscp.configs.guthscp173.realistic_blink then
 					for i, v in ipairs( player.GetAll() ) do
 						if guthscp.is_scp and guthscp.is_scp( v ) then continue end  --  don't count on SCPs
-						guthscp173.set_blink_counter( v, math.random( guthscp.configs.guthscp173.blink_maximum_count ) )
+						guthscp.modules.guthscp173.set_blink_counter( v, math.random( guthscp.configs.guthscp173.blink_maximum_count ) )
 					end
 				end
 
