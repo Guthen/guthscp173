@@ -1,9 +1,7 @@
-if not GuthSCP or not GuthSCP.Config then
-    return
-end
+local guthscp173 = guthscp.modules.guthscp173
 
 local choose_target, next_position = NULL, nil
-net.Receive( "vkxscp173:action", function()
+net.Receive( "guthscp173:action", function()
     local is_attack = net.ReadBool()
     local is_replacing = net.ReadBool()
 
@@ -17,63 +15,67 @@ net.Receive( "vkxscp173:action", function()
 end )
 
 --  HUD
-CreateConVar( "vkx_scp173_blink", "1", { FCVAR_USERINFO, FCVAR_ARCHIVE }, "Enables the black blinking screen, it's only visual" )
-local halo_convar = CreateClientConVar( "vkx_scp173_halo", "1", nil, nil, "As 173, show or not halos on players" )
+CreateConVar( "guthscp_173_blink", "1", { FCVAR_USERINFO, FCVAR_ARCHIVE }, "Enables the black blinking screen, it's only visual" )
+local halo_convar = CreateClientConVar( "guthscp_173_halo", "1", nil, nil, "As 173, show or not halos on players" )
 
 local target_color = Color( 200, 150, 25 )
 local choose_target_color = Color( 200, 100, 25 )
 local red, green = Color( 200, 20, 20 ), Color( 20, 200, 20 )
-hook.Add( "PreDrawHalos", "vkxscp173:hud", function()
+hook.Add( "PreDrawHalos", "guthscp173:hud", function()
     if not halo_convar:GetBool() then return end
 
     local ply = LocalPlayer()
-    if not GuthSCP.isSCP173( ply ) then return end
+    if not guthscp173.is_scp_173( ply ) then return end
 
     local target = ply:GetEyeTrace().Entity
 
-    for i, v in ipairs( ents.FindInSphere( ply:GetPos(), GuthSCP.Config.vkxscp173.distance_unit ) ) do
+    for i, v in ipairs( ents.FindInSphere( ply:GetPos(), guthscp.configs.guthscp173.distance_unit ) ) do
         if v == ply then continue end 
         if not ( v:IsPlayer() and v:Alive() ) and not ( ( v:IsNPC() or v:IsNextBot() ) and v:Health() >= 0 ) then continue end
-        if GuthSCP.isSCP( v ) then continue end
+        if guthscp.is_scp( v ) then continue end
 
         if not ( v == target ) and not ( v == choose_target ) then
+            --  draw potential target
             local color = red
-            if not GuthSCP.isSCP173Looked( ply ) and ply:GetPos():DistToSqr( v:GetPos() ) <= GuthSCP.Config.vkxscp173.distance_unit_sqr then
-                color = ( GuthSCP.isBlinking( v ) or not GuthSCP.isLookingAt( v, ply ) ) and green or red
+            if not guthscp173.is_scp_173_looked( ply ) and ply:GetPos():DistToSqr( v:GetPos() ) <= guthscp.configs.guthscp173.distance_unit_sqr then
+                color = ( guthscp173.is_blinking( v ) or not guthscp173.is_looking_at( v, ply ) ) and green or red
             end
             halo.Add( { v }, color )
         else
+            --  draw choosen target
             local t = math.abs( math.sin( CurTime() * 10 ) ) * 2
             halo.Add( { v }, v == choose_target and choose_target_color or target_color, 2 + t, 2 + t )
         end
     end
 end )
 
-hook.Add( "PlayerFootstep", "vkxscp173:sound", function( ply )
-    if not GuthSCP.isSCP173( ply ) then return end
+--  footstep sounds
+hook.Add( "PlayerFootstep", "guthscp173:sound", function( ply )
+    if not guthscp173.is_scp_173( ply ) then return end
 
     --  play sound
-    if not GuthSCP.getPlayedSound( ply, GuthSCP.Config.vkxscp173.sound_moved ) then
-        GuthSCP.playSound( ply, GuthSCP.Config.vkxscp173.sound_moved, 400, true, 1 )
+    if not guthscp.sound.get_played_sound( ply, guthscp.configs.guthscp173.sound_moved ) then
+        guthscp.sound.play( ply, guthscp.configs.guthscp173.sound_moved, 400, true, 1 )
     end
 
     --  stop sound after some time (reset the timer each time it walks)
-    timer.Create( "vkxscp173:footstep_sound" .. ( ply:AccountID() or ply:EntIndex() ), .35, 1, function()
-        GuthSCP.stopSound( ply, GuthSCP.Config.vkxscp173.sound_moved )
+    timer.Create( "guthscp173:footstep_sound" .. ( ply:AccountID() or ply:EntIndex() ), .35, 1, function()
+        guthscp.sound.stop( ply, guthscp.configs.guthscp173.sound_moved )
     end )
     return true
 end )
 
+--  preview model 
 local preview_model = ClientsideModel( "models/player/scp/173/scp.mdl" )
 preview_model:SetMaterial( "debug/debugwireframe" )
 preview_model:SetNoDraw( true )
 
-hook.Add( "PostDrawOpaqueRenderables", "vkxscp173:new_pos", function()
+hook.Add( "PostDrawOpaqueRenderables", "guthscp173:new_pos", function()
     local ply = LocalPlayer()
 
     local swep = ply:GetActiveWeapon()
-    if not IsValid( swep ) or not ( swep:GetClass() == "vkx_scp_173" ) then return end
-    if GuthSCP.Config.vkxscp173.disable_teleport then return end
+    if not IsValid( swep ) or not ( swep:GetClass() == "guthscp_173" ) then return end
+    if guthscp.configs.guthscp173.disable_teleport then return end
     if not swep.ShowDestinationHUD then return end
 
     local tr = ply:GetEyeTrace()
@@ -81,7 +83,7 @@ hook.Add( "PostDrawOpaqueRenderables", "vkxscp173:new_pos", function()
 
     --	color
     local pos, ang = next_position or tr.HitPos, Angle( 0, ply:GetAngles().y, 0 )
-    if ply:GetPos():DistToSqr( pos ) > GuthSCP.Config.vkxscp173.distance_unit_sqr or GuthSCP.isGround( pos ) then 
+    if ply:GetPos():DistToSqr( pos ) > guthscp.configs.guthscp173.distance_unit_sqr or guthscp.world.is_in_ground( pos ) then 
         render.SetColorModulation( .75, 0, 0 )
     else
         render.SetColorModulation( 0, .75, 0 )
@@ -91,35 +93,31 @@ hook.Add( "PostDrawOpaqueRenderables", "vkxscp173:new_pos", function()
     render.SetBlend( .1 )
 
     --	model
-    --model:SetNoDraw( false )
     preview_model:SetRenderOrigin( next_position or pos )
     preview_model:SetRenderAngles( ang )
     preview_model:SetModel( ply:GetModel() )
     preview_model:DrawModel()
-    --[[ render.Model( {
-        model = ply:GetModel(),
-        pos = next_position or pos,
-        angle = ang,
-    }, model ) ]]
-    --model:SetNoDraw( true )
 end )
 
+--  replacement model: allow to update the looking angle only when not looked at
 local replace_model = ClientsideModel( "models/player/scp/173/scp.mdl" )
 replace_model:SetNoDraw( true )
 
-hook.Add( "PrePlayerDraw", "vkxscp173:eye_angle", function( ply )
-    --if ply == LocalPlayer() then return end
-    if not GuthSCP.isSCP173( ply ) then return end
+hook.Add( "PrePlayerDraw", "guthscp173:eye_angle", function( ply )
+    if not guthscp173.is_scp_173( ply ) then return end
 
     --  force a specific angle
-    local angles = ply:GetNWAngle( "vkxscp173:eye_angles", ply:EyeAngles() )
+    local angles = ply:GetNWAngle( "guthscp173:eye_angles", ply:EyeAngles() )
     angles.p = 0
 
+    --  setup model
     replace_model:SetRenderOrigin( ply:GetPos() )
     replace_model:SetRenderAngles( angles )
-
     replace_model:SetModel( ply:GetModel() )
     replace_model:SetupBones()  --  allow to draw the model multiple times
+
+    --  draw model
     replace_model:DrawModel()
+
     return true
 end )

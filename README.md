@@ -10,20 +10,20 @@ This addon is available on the Workshop [here](https://steamcommunity.com/shared
 ## Features
 + SCP-173 System : frozen if looked at, don't take damage, emit "oooiiiiinnnnngggr" sound when opening a door, other basic SCP Teams don't freeze him when they look at him.
 + SCP-173 SWEP : LMB to teleport, kill your victim or break the looked entity (if enabled), RMB to teleport where you are looking at (maximum of 10 meters of distance and not being able to glitch trought the map) with a preview of the destination (which you can disable by using the Reload key)
-+ (almost) Fully configurable with [SCP] Guthen's Addons Base (guthscpbase in your console)
++ (almost) Fully configurable with [SCP] Guthen's Addons Base (guthscp in your console)
 + (configurable) Blink system (see a list of HUD below which works with it)
 + (optional & configurable) Can break doors with multiple left clicks
 + **Not gamemode-dependent** 
 
 ## Convars
-+ `vkx_scp173_blink` : (client; 0: false; 1: true) : Enables the blinking HUD.
-+ `vkx_scp173_halo` : (client; 0: false; 1: true) : As SCP-173, show or not halos on player.
++ `guthscp_173_blink` : (client; 0: false; 1: true) : Enables the blinking HUD.
++ `guthscp_173_halo` : (client; 0: false; 1: true) : As SCP-173, show or not halos on player.
 
 ## Known Issues
 ### "This addon doesn't work!"
-Be sure to have installed [[SCP] Guthen's Addons Base](https://steamcommunity.com/sharedfiles/filedetails/?id=2139692777) on your server. Verify that you can open the configuration menu with `guthscpbase` in your game console.
+Be sure to have installed [[SCP] Guthen's Addons Base](https://steamcommunity.com/sharedfiles/filedetails/?id=2139692777) on your server. Verify that you can open the configuration menu with `guthscp` in your game console.
 
-Then, be sure that you did well configured the SCP Teams in the config menu (`guthscpbase` in your game's console), a SCP Team won't trigger SCP-173 behaviour.
+Then, be sure that you did well configured the SCP Teams in the config menu (`guthscp` in your game's console), a SCP Team won't trigger SCP-173 behaviour.
 
 ### "I can't hear the sounds!"
 Be sure to have installed [Guthen SCP Content](https://steamcommunity.com/workshop/filedetails/?id=1673048305) on your client.
@@ -31,7 +31,7 @@ Be sure to have installed [Guthen SCP Content](https://steamcommunity.com/worksh
 Otherwise, check the configured sounds paths in the configuration menu. 
 
 ### "NPCs don't freeze me (as 173)!"
-You have to uncheck the variable `Disable NPC` in the configuration menu (again `guthscpbase` in your game's console).
+You have to uncheck the variable `Disable NPC` in the configuration menu (again `guthscp` in your game's console).
 
 ## Compatible HUDs
 List of HUDs compatible with the blinking system :

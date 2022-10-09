@@ -1,8 +1,11 @@
+local guthscp173 = guthscp.modules.guthscp173
+
+
 AddCSLuaFile()
 
 SWEP.PrintName				= "SCP-173"
 SWEP.Author					= "Vyrkx A.K.A. Guthen"
-SWEP.Instructions			= "Left click to teleport and kill a human around you. Right click to teleport where you look. Reload to trigger the destination HUD."
+SWEP.Instructions			= "Left click to teleport and to kill the human you're looking at. Right click to teleport where you look. Reload to trigger the destination HUD."
 SWEP.Category 				= "GuthSCP"
 
 SWEP.Spawnable 				= true
@@ -37,8 +40,9 @@ SWEP.GuthSCPLVL 		   	= 	0
 --	preview the teleport destination
 SWEP.ShowDestinationHUD = true
 
+
 local function send_target( ply, target )
-	net.Start( "vkxscp173:action" )
+	net.Start( "guthscp173:action" )
 		net.WriteBool( true )
 		if IsValid( target ) then
 			net.WriteBool( true )
@@ -50,7 +54,7 @@ local function send_target( ply, target )
 end
 
 local function send_position( ply, pos )
-	net.Start( "vkxscp173:action" )
+	net.Start( "guthscp173:action" )
 		net.WriteBool( false )
 		if pos then
 			net.WriteBool( true )
@@ -64,29 +68,30 @@ end
 local function kill_target( ply, target )
 	ply:SetPos( target:GetPos() - ( target:GetPos() - ply:GetPos() ):GetNormalized() * 15 )
 	target:TakeDamage( math.huge, ply, ply:GetActiveWeapon() )
-	target:EmitSound( GuthSCP.Config.vkxscp173.sounds_snapped_neck[math.random( #GuthSCP.Config.vkxscp173.sounds_snapped_neck )] )
+	target:EmitSound( guthscp.configs.guthscp173.sounds_snapped_neck[math.random( #guthscp.configs.guthscp173.sounds_snapped_neck )] )
 	
-	if ply.vkxscp173_next_target then
+	if ply.guthscp173_next_target then
 		send_target( ply ) --  erase target
 
-		ply.vkxscp173_next_target = nil
+		ply.guthscp173_next_target = nil
 	end
 
-	ply:SetNWAngle( "vkxscp173:eye_angles", ply:EyeAngles() )
+	ply:SetNWAngle( "guthscp173:eye_angles", ply:EyeAngles() )
 end
 
 local function move_at( ply, pos )
 	ply:SetPos( pos )
-	ply:EmitSound( GuthSCP.Config.vkxscp173.sounds_teleported[math.random( #GuthSCP.Config.vkxscp173.sounds_teleported )] )
+	ply:EmitSound( guthscp.configs.guthscp173.sounds_teleported[math.random( #guthscp.configs.guthscp173.sounds_teleported )] )
 
-	if ply.vkxscp173_next_position then
+	if ply.guthscp173_next_position then
 		send_position( ply ) --  erase position
 
-		ply.vkxscp173_next_position = nil
+		ply.guthscp173_next_position = nil
 	end
 	
-	ply:SetNWAngle( "vkxscp173:eye_angles", ply:EyeAngles() )
+	ply:SetNWAngle( "guthscp173:eye_angles", ply:EyeAngles() )
 end
+
 
 function SWEP:PrimaryAttack()
 	if not SERVER then return end
@@ -98,15 +103,15 @@ function SWEP:PrimaryAttack()
 
 	--  kill target
 	if target:IsPlayer() or target:IsNPC() or target:IsNextBot() then
-		if target:GetPos():DistToSqr( ply:GetPos() ) > GuthSCP.Config.vkxscp173.distance_unit_sqr then return end
-		if GuthSCP.isSCP( target ) then return end
+		if target:GetPos():DistToSqr( ply:GetPos() ) > guthscp.configs.guthscp173.distance_unit_sqr then return end
+		if guthscp.is_scp( target ) then return end
 
 		if target:Health() > 0 then --  not using Player/Alive caused not existing on NPCs
-			if GuthSCP.isSCP173Looked( ply ) then
+			if guthscp173.is_scp_173_looked( ply ) then
 				send_target( ply, target )
 
-				ply.vkxscp173_next_target = target
-				ply.vkxscp173_next_position = nil
+				ply.guthscp173_next_target = target
+				ply.guthscp173_next_position = nil
 			else
 				kill_target( ply, target )
 			end
@@ -114,17 +119,17 @@ function SWEP:PrimaryAttack()
 			self:SetNextPrimaryFire( CurTime() + .5 )
 		end
 	--  break entities
-	elseif GuthSCP.Config.vkxscp173.breaking_enabled then
+	elseif guthscp.configs.guthscp173.breaking_enabled then
 		if target:GetPos():Distance( ply:GetPos() ) > 80 then return end
-		if not GuthSCP.isBreakableEntity( target ) then return end
+		if not guthscp.is_breakable_entity( target ) then return end
 
 		--  counter decrease
-		target.vkxscp173_break_count = ( tr.Entity.vkxscp173_break_count or GuthSCP.Config.vkxscp173.break_hit_count ) - 1
+		target.guthscp173_break_count = ( tr.Entity.guthscp173_break_count or guthscp.configs.guthscp173.break_hit_count ) - 1
 
 		--  break
-		if target.vkxscp173_break_count <= 0 then
-			GuthSCP.breakEntitiesAtPlayerTrace( tr, GuthSCP.Config.vkxscp173.break_force_scale )
-			target.vkxscp173_break_count = nil
+		if target.guthscp173_break_count <= 0 then
+			guthscp.break_entities_at_player_trace( tr, guthscp.configs.guthscp173.break_force_scale )
+			target.guthscp173_break_count = nil
 		--  hit
 		else
 			--  sparks effect
@@ -147,22 +152,26 @@ end
 
 function SWEP:SecondaryAttack()
 	if not SERVER then return end
-	if GuthSCP.Config.vkxscp173.disable_teleport then return end
+	if guthscp.configs.guthscp173.disable_teleport then return end  --  disable this behaviour via config
 
 	local ply = self:GetOwner()
 
+	--  check trace pos validity
 	local pos = ply:GetEyeTrace().HitPos
-	if ply:GetPos():DistToSqr( pos ) > GuthSCP.Config.vkxscp173.distance_unit_sqr or GuthSCP.isGround( pos ) then return end
+	if ply:GetPos():DistToSqr( pos ) > guthscp.configs.guthscp173.distance_unit_sqr or guthscp.world.is_in_ground( pos ) then return end
 
-	if GuthSCP.isSCP173Looked( ply ) then 
+	if guthscp173.is_scp_173_looked( ply ) then 
+		--  schedule next position
 		send_position( ply, pos )
 
-		ply.vkxscp173_next_position = pos
-		ply.vkxscp173_next_target = nil
+		ply.guthscp173_next_position = pos
+		ply.guthscp173_next_target = nil
 	else
+		--  move directly there
 		move_at( ply, pos )
 	end
 
+	--  cooldown
 	self.Weapon:SetNextSecondaryFire( CurTime() + .5 )
 end
 
@@ -175,44 +184,46 @@ end
 
 function SWEP:Think()
 	local ply = self:GetOwner()
-	if GuthSCP.isSCP173Looked( ply ) then return end
+	if guthscp173.is_scp_173_looked( ply ) then return end
 
-	self.GuthSCPLVL = GuthSCP.Config.vkxscp173.keycard_level or 0
+	self.GuthSCPLVL = guthscp.configs.guthscp173.keycard_level or 0
 
-	if IsValid( ply.vkxscp173_next_target ) then
-		if ply.vkxscp173_next_target:GetPos():DistToSqr( ply:GetPos() ) > GuthSCP.Config.vkxscp173.distance_unit_sqr then 
-			send_target( ply ) --  erase target
-
-			ply.vkxscp173_next_target = nil
+	if IsValid( ply.guthscp173_next_target ) then
+		--  cancel if too far
+		if ply.guthscp173_next_target:GetPos():DistToSqr( ply:GetPos() ) > guthscp.configs.guthscp173.distance_unit_sqr then 
+			send_target( ply, nil )  --  erase target
+			
+			ply.guthscp173_next_target = nil
 			return
 		end
-		kill_target( ply, ply.vkxscp173_next_target )
-	elseif ply.vkxscp173_next_position then
-		if ply.vkxscp173_next_position:DistToSqr( ply:GetPos() ) > GuthSCP.Config.vkxscp173.distance_unit_sqr then 
-			send_position( ply ) --  erase position
 
-			ply.vkxscp173_next_position = nil
+		--  kill scheduled target
+		kill_target( ply, ply.guthscp173_next_target )
+	elseif ply.guthscp173_next_position then
+		--  cancel if too far
+		if ply.guthscp173_next_position:DistToSqr( ply:GetPos() ) > guthscp.configs.guthscp173.distance_unit_sqr then 
+			send_position( ply, nil )  --  erase position
+
+			ply.guthscp173_next_position = nil
 			return
 		end
-		move_at( ply, ply.vkxscp173_next_position )
+
+		--  move to scheduled position
+		move_at( ply, ply.guthscp173_next_position )
 	end
 end
-
---[[ function SWEP:Deploy()
-	if not SERVER then return end
-
-	local ply = self:GetOwner()
-	--	don't know why but model isn't networked well from server to client on my game, so I improvise
-	ply:SetNWString( "vkxscp173:model", ply:GetModel() )
-end ]]
 
 if CLIENT then
 	function SWEP:DrawHUD()
 		local ply = LocalPlayer() 
-		if not ply or not IsValid( ply ) then return end
-	
-		if GuthSCP.isSCP173Looked( ply ) then
-			draw.SimpleTextOutlined( "Looked at", "ScoreboardDefaultTitle", ScrW() / 2, ScrH() * .85, team.GetColor( ply:Team() ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 3, color_black )
-		end
+		if not IsValid( ply ) then return end	
+		if not guthscp173.is_scp_173_looked( ply ) then return end
+
+		draw.SimpleTextOutlined( "Looked at", "ScoreboardDefaultTitle", ScrW() / 2, ScrH() * .85, team.GetColor( ply:Team() ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 3, color_black )
+	end
+
+	--  add to spawnmenu
+	if guthscp then
+		guthscp.spawnmenu.add_weapon( SWEP, "SCPs" )
 	end
 end
