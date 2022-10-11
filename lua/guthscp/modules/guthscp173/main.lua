@@ -184,12 +184,6 @@ MODULE.menu = {
 			guthscp.config.create_apply_button(),
 			guthscp.config.create_reset_button(),
 		},
-		receive = function( form )
-			guthscp.config.apply( MODULE.id, form, {
-				network = true,
-				save = true,
-			} )
-		end,
 		parse = function( form )
 			if SERVER then
 				--  regenerate the blink counter if switched from arcade to realistic mode
