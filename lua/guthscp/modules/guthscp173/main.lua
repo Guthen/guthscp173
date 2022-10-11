@@ -30,14 +30,21 @@ MODULE.menu = {
 				desc = "Maximum distance where SCP-173 can moves and kills his targets. 1 meter ~= 40 unit",
 				default = 10 * 40, --  10 meter
 			},
-			guthscp.maxKeycardLevel and {
+			{
 				type = "NumWang",
 				name = "Keycard Level",
 				id = "keycard_level",
 				desc = "Compatibility with my keycard system. Set a keycard level to SCP-173's swep",
 				default = 5,
 				min = 0,
-				max = guthscp.maxKeycardLevel,
+				max = function( self, numwang )
+					if self:is_disabled() then return 0 end
+					
+					return guthscp.modules.guthscpkeycard.max_keycard_level
+				end,
+				is_disabled = function( self, numwang )
+					return guthscp.modules.guthscpkeycard == nil
+				end,
 			},
 			{
 				type = "CheckBox",
