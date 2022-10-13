@@ -1,3 +1,8 @@
+if not guthscp then
+	error( "guthscp173 - fatal error! https://github.com/Guthen/guthscpbase must be installed on the server!" )
+	return
+end
+
 local guthscp173 = guthscp.modules.guthscp173
 
 
