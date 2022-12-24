@@ -6,9 +6,9 @@ if SERVER then
 	guthscp173.filter:listen_disconnect()
 	guthscp173.filter:listen_weapon_users( "guthscp_173" )  --  being SCP-173 just mean a player having the weapon 
 
-    guthscp173.filter.event_player_removed:add_listener( "guthscp173:unfreeze", function( ply )
-        ply:SetNWBool( "guthscp173:looked", false )
-    end )
+	guthscp173.filter.event_player_removed:add_listener( "guthscp173:unfreeze", function( ply )
+		ply:SetNWBool( "guthscp173:looked", false )
+	end )
 end
 
 function guthscp173.get_scps_173()
@@ -17,76 +17,76 @@ end
 
 --  functions
 function guthscp173.is_scp_173( ply )
-    if CLIENT and ply == nil then
+	if CLIENT and ply == nil then
 		ply = LocalPlayer() 
 	end
 
-    return guthscp173.filter:is_player_in( ply )
+	return guthscp173.filter:is_player_in( ply )
 end
 
 function guthscp173.is_scp_173_looked( ply )
-    return ply:GetNWBool( "guthscp173:looked", false )
+	return ply:GetNWBool( "guthscp173:looked", false )
 end
 
 function guthscp173.is_looking_at( ply, ent )
-    if not IsValid( ply ) then return false end
-    if not ply:IsPlayer() then 
-        --  implementation for NPCs & NextBots
-        if CLIENT then
-            return false
-        end
-    end  
+	if not IsValid( ply ) then return false end
+	if not ply:IsPlayer() then 
+		--  implementation for NPCs & NextBots
+		if CLIENT then
+			return false
+		end
+	end  
 
-    --  get target bounds
-    local pos = ent:GetPos()
-    local min, max = ent:GetModelBounds()
-    local tall = Vector( 0, 0, max.z - min.z )
+	--  get target bounds
+	local pos = ent:GetPos()
+	local min, max = ent:GetModelBounds()
+	local tall = Vector( 0, 0, max.z - min.z )
 
-    --  get field of view
-    local fov = ( ply:IsPlayer() and ply:GetFOV() or 90 ) + 25
-    local vision_range = math.cos( math.rad( fov / 2 ) )
+	--  get field of view
+	local fov = ( ply:IsPlayer() and ply:GetFOV() or 90 ) + 25
+	local vision_range = math.cos( math.rad( fov / 2 ) )
 
-    --  check potential visibility
-    local dot = ply:GetAimVector():Dot( ( pos - ply:GetPos() ):GetNormal() )
-    return dot > 0 and dot > vision_range and ( ply:IsLineOfSightClear( pos ) or ply:IsLineOfSightClear( pos + tall ) )
+	--  check potential visibility
+	local dot = ply:GetAimVector():Dot( ( pos - ply:GetPos() ):GetNormal() )
+	return dot > 0 and dot > vision_range and ( ply:IsLineOfSightClear( pos ) or ply:IsLineOfSightClear( pos + tall ) )
 end
 
 function guthscp173.is_blinking( ply )
-    if not IsValid( ply ) then return false end
-    return ply:GetNWBool( "guthscp173:blink_counter", 0 ) == 0
+	if not IsValid( ply ) then return false end
+	return ply:GetNWBool( "guthscp173:blink_counter", 0 ) == 0
 end
 
 function guthscp173.set_blink_counter( ply, count )
-    ply:SetNWInt( "guthscp173:blink_counter", count )
+	ply:SetNWInt( "guthscp173:blink_counter", count )
 end
 
 function guthscp173.get_blink_counter( ply )
-    local blink_counter = ply:GetNWInt( "guthscp173:blink_counter", nil )
+	local blink_counter = ply:GetNWInt( "guthscp173:blink_counter", nil )
 
-    --  initialize counter
-    if not blink_counter then 
-        guthscp173.set_blink_counter( math.random( guthscp.configs.guthscp173.blink_maximum_count ) )
-        return guthscp173.get_blink_counter()
-    end
+	--  initialize counter
+	if not blink_counter then 
+		guthscp173.set_blink_counter( math.random( guthscp.configs.guthscp173.blink_maximum_count ) )
+		return guthscp173.get_blink_counter()
+	end
 
-    return blink_counter
+	return blink_counter
 end
 
 --  handle movement
 hook.Add( "SetupMove", "guthscp173:no_move", function( ply, mv, cmd )
-    if not guthscp173.is_scp_173( ply ) then return end
-    if ply:GetMoveType() == MOVETYPE_NOCLIP then return end --  allow noclip
+	if not guthscp173.is_scp_173( ply ) then return end
+	if ply:GetMoveType() == MOVETYPE_NOCLIP then return end --  allow noclip
 
-    local looked = guthscp173.is_scp_173_looked( ply )
+	local looked = guthscp173.is_scp_173_looked( ply )
 
-    --  disable jump
-    if guthscp.configs.guthscp173.disable_jump or looked then
-        mv:SetButtons( bit.band( mv:GetButtons(), bit.bnot( IN_JUMP ) ) )
-    end
+	--  disable jump
+	if guthscp.configs.guthscp173.disable_jump or looked then
+		mv:SetButtons( bit.band( mv:GetButtons(), bit.bnot( IN_JUMP ) ) )
+	end
 
-    --  disable directional movement
-    if guthscp.configs.guthscp173.disable_directional_movement or looked then
-        mv:SetSideSpeed( 0 )
-        mv:SetForwardSpeed( 0 )
-    end
+	--  disable directional movement
+	if guthscp.configs.guthscp173.disable_directional_movement or looked then
+		mv:SetSideSpeed( 0 )
+		mv:SetForwardSpeed( 0 )
+	end
 end )
