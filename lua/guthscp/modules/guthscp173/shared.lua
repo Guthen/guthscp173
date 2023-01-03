@@ -6,13 +6,13 @@ if SERVER then
 	guthscp173.filter:listen_disconnect()
 	guthscp173.filter:listen_weapon_users( "guthscp_173" )  --  being SCP-173 just mean a player having the weapon 
 
-	guthscp173.filter.event_player_removed:add_listener( "guthscp173:unfreeze", function( ply )
+	guthscp173.filter.event_removed:add_listener( "guthscp173:unfreeze", function( ply )
 		ply:SetNWBool( "guthscp173:looked", false )
 	end )
 end
 
 function guthscp173.get_scps_173()
-	return guthscp173.filter:get_players_list()
+	return guthscp173.filter:get_list()
 end
 
 --  functions
@@ -21,7 +21,7 @@ function guthscp173.is_scp_173( ply )
 		ply = LocalPlayer() 
 	end
 
-	return guthscp173.filter:is_player_in( ply )
+	return guthscp173.filter:is_in( ply )
 end
 
 function guthscp173.is_scp_173_looked( ply )
