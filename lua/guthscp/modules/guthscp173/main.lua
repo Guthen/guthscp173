@@ -94,6 +94,13 @@ MODULE.menu = {
 			},
 			{
 				type = "NumWang",
+				name = "Break Distance Unit",
+				id = "break_distance_unit",
+				desc = "Maximum distance where SCP-173 can breaks entities. Must be lower than 'Distance Unit' variable. 1 meter ~= 40 unit",
+				default = 3 * 40, --  3 meter
+			},
+			{
+				type = "NumWang",
 				name = "Break Force Scale",
 				id = "break_force_scale",
 				desc = "Scale the breaking velocity force",

@@ -124,11 +124,11 @@ function SWEP:PrimaryAttack()
 		end
 	--  break entities
 	elseif guthscp.configs.guthscp173.breaking_enabled then
-		if target:GetPos():Distance( ply:GetPos() ) > 80 then return end
+		if target:GetPos():Distance( ply:GetPos() ) > guthscp.configs.guthscp173.break_distance_unit then return end
 		if not guthscp.is_breakable_entity( target ) then return end
 
 		--  counter decrease
-		target.guthscp173_break_count = ( tr.Entity.guthscp173_break_count or guthscp.configs.guthscp173.break_hit_count ) - 1
+		target.guthscp173_break_count = ( target.guthscp173_break_count or guthscp.configs.guthscp173.break_hit_count ) - 1
 
 		--  break
 		if target.guthscp173_break_count <= 0 then
