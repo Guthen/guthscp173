@@ -102,13 +102,12 @@ function SWEP:PrimaryAttack()
 	if not SERVER then return end
 
 	local ply = self:GetOwner()
-	local tr = ply:GetEyeTrace()
+	local tr = guthscp.world.player_trace_attack( ply, guthscp.configs.guthscp173.distance_unit, Vector( 5, 5, 5 ) )
 	local target = tr.Entity
 	if not IsValid( target ) then return end
 
 	--  kill target
 	if target:IsPlayer() or target:IsNPC() or target:IsNextBot() then
-		if target:GetPos():DistToSqr( ply:GetPos() ) > guthscp.configs.guthscp173.distance_unit_sqr then return end
 		if guthscp.is_scp( target ) then return end
 
 		if target:Health() > 0 then --  not using Player/Alive caused not existing on NPCs
