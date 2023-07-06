@@ -27,7 +27,7 @@ hook.Add( "PreDrawHalos", "guthscp173:hud", function()
 	local ply = LocalPlayer()
 	if not guthscp173.is_scp_173( ply ) then return end
 
-	local target = ply:GetEyeTrace().Entity
+	local target = guthscp173.player_attack_trace( ply ).Entity
 
 	for i, v in ipairs( ents.FindInSphere( ply:GetPos(), guthscp.configs.guthscp173.distance_unit ) ) do
 		if v == ply then continue end 

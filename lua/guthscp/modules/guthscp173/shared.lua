@@ -72,6 +72,18 @@ function guthscp173.get_blink_counter( ply )
 	return blink_counter
 end
 
+function guthscp173.player_attack_trace( ply )
+	return guthscp.world.player_trace_attack( 
+		ply, 
+		guthscp.configs.guthscp173.distance_unit, 
+		Vector( 
+			guthscp.configs.guthscp173.attack_hull_size, 
+			guthscp.configs.guthscp173.attack_hull_size, 
+			guthscp.configs.guthscp173.attack_hull_size 
+		) 
+	)
+end
+
 --  handle movement
 hook.Add( "SetupMove", "guthscp173:no_move", function( ply, mv, cmd )
 	if not guthscp173.is_scp_173( ply ) then return end

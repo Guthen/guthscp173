@@ -102,15 +102,7 @@ function SWEP:PrimaryAttack()
 	if not SERVER then return end
 
 	local ply = self:GetOwner()
-	local tr = guthscp.world.player_trace_attack( 
-		ply, 
-		guthscp.configs.guthscp173.distance_unit, 
-		Vector( 
-			guthscp.configs.guthscp173.attack_hull_size, 
-			guthscp.configs.guthscp173.attack_hull_size, 
-			guthscp.configs.guthscp173.attack_hull_size 
-		) 
-	)
+	local tr = guthscp173.player_attack_trace( ply )
 	local target = tr.Entity
 	if not IsValid( target ) then return end
 
