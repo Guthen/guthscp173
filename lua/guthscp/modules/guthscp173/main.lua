@@ -32,6 +32,13 @@ MODULE.menu = {
 			},
 			{
 				type = "NumWang",
+				name = "Attack Hull Size",
+				id = "attack_hull_size",
+				desc = "Size of tolerance for targeting in units. The higher the number, the easier it is to aim, but the less precise it is",
+				default = 5,
+			},
+			{
+				type = "NumWang",
 				name = "Keycard Level",
 				id = "keycard_level",
 				desc = "Compatibility with my keycard system. Set a keycard level to SCP-173's swep",
