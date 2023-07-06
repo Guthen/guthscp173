@@ -5,7 +5,6 @@ end
 
 local guthscp173 = guthscp.modules.guthscp173
 
-
 AddCSLuaFile()
 
 SWEP.PrintName				= "SCP-173"
@@ -120,7 +119,7 @@ function SWEP:PrimaryAttack()
 				kill_target( ply, target )
 			end
 			
-			self:SetNextPrimaryFire( CurTime() + .5 )
+			self:SetNextPrimaryFire( CurTime() + guthscp.configs.guthscp173.kill_cooldown )
 		end
 	--  break entities
 	elseif guthscp.configs.guthscp173.breaking_enabled then
@@ -150,7 +149,7 @@ function SWEP:PrimaryAttack()
             util.ScreenShake( target:GetPos(), 5, 20, 1, 200 )
 		end
 
-		self:SetNextPrimaryFire( CurTime() + .75 )
+		self:SetNextPrimaryFire( CurTime() + guthscp.configs.guthscp173.break_cooldown )
 	end
 end
 
@@ -176,7 +175,7 @@ function SWEP:SecondaryAttack()
 	end
 
 	--  cooldown
-	self.Weapon:SetNextSecondaryFire( CurTime() + .5 )
+	self.Weapon:SetNextSecondaryFire( CurTime() + guthscp.configs.guthscp173.teleport_cooldown )
 end
 
 function SWEP:Reload()

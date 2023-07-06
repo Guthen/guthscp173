@@ -32,13 +32,6 @@ MODULE.menu = {
 			},
 			{
 				type = "NumWang",
-				name = "Attack Hull Size",
-				id = "attack_hull_size",
-				desc = "Size of tolerance for targeting in units. The higher the number, the easier it is to aim, but the less precise it is",
-				default = 5,
-			},
-			{
-				type = "NumWang",
 				name = "Keycard Level",
 				id = "keycard_level",
 				desc = "Compatibility with my keycard system. Set a keycard level to SCP-173's swep",
@@ -87,6 +80,41 @@ MODULE.menu = {
 				id = "disable_npc",
 				desc = "If unchecked, NPCs will neither blink nor freeze 173 even though looking at him",
 				default = true,
+			},
+			{
+				type = "Category",
+				name = "Weapon"
+			},
+			{
+				type = "NumWang",
+				name = "Attack Hull Size",
+				id = "attack_hull_size",
+				desc = "Size of tolerance for targeting in units. The higher the number, the easier it is to aim, but the less precise it is",
+				default = 5,
+			},
+			{
+				type = "NumWang",
+				name = "Kill Cooldown",
+				id = "kill_cooldown",
+				desc = "Cooldown between kill requests (left click)",
+				default = 0.5,
+				decimals = 2
+			},
+			{
+				type = "NumWang",
+				name = "Break Cooldown",
+				id = "break_cooldown",
+				desc = "Cooldown between entities breaks (left click)",
+				default = 0.75,
+				decimals = 2
+			},
+			{
+				type = "NumWang",
+				name = "Teleport Cooldown",
+				id = "teleport_cooldown",
+				desc = "Cooldown between teleportation requests (right click)",
+				default = 0.33,
+				decimals = 2
 			},
 			{
 				type = "Category",
