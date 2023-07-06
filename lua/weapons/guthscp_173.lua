@@ -226,7 +226,5 @@ if CLIENT then
 	end
 
 	--  add to spawnmenu
-	if guthscp then
-		guthscp.spawnmenu.add_weapon( SWEP, "SCPs" )
-	end
+	guthscp.spawnmenu.add_weapon( SWEP, "SCPs" )
 end
