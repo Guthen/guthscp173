@@ -5,7 +5,7 @@ util.AddNetworkString( "guthscp173:action" )
 local scps_173 = {}
 hook.Add( "Think", "guthscp173:think", function()
 	for _, v in ipairs( scps_173 ) do
-		if not v:Alive() then continue end
+		if not IsValid( v ) or not v:Alive() then continue end
 		
 		--  should 173 be freezed
 		local should_freeze = false
