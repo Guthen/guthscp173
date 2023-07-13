@@ -19,16 +19,10 @@ MODULE.menu = {
 	--  config
 	config = {
 		form = {
+			--  general
 			{
 				type = "Category",
 				name = "General",
-			},
-			{
-				type = "NumWang",
-				name = "Distance Unit",
-				id = "distance_unit",
-				desc = "Maximum distance where SCP-173 can moves and kills his targets. 1 meter ~= 40 unit",
-				default = 10 * 40, --  10 meter
 			},
 			{
 				type = "NumWang",
@@ -81,9 +75,17 @@ MODULE.menu = {
 				desc = "If unchecked, NPCs will neither blink nor freeze 173 even though looking at him",
 				default = true,
 			},
+			--  weapon
 			{
 				type = "Category",
 				name = "Weapon"
+			},
+			{
+				type = "NumWang",
+				name = "Distance Unit",
+				id = "distance_unit",
+				desc = "Maximum distance where SCP-173 can moves and kills his targets. 1 meter ~= 40 unit",
+				default = 10 * 40, --  10 meter
 			},
 			{
 				type = "NumWang",
@@ -116,6 +118,7 @@ MODULE.menu = {
 				default = 0.33,
 				decimals = 2
 			},
+			--  entity breaking
 			{
 				type = "Category",
 				name = "Entity Breaking",
@@ -150,6 +153,7 @@ MODULE.menu = {
 				default = 3,
 				decimals = 0,
 			},
+			--  blink
 			{
 				type = "Category",
 				name = "Blink",
@@ -190,6 +194,7 @@ MODULE.menu = {
 				desc = "If checked, the blink system will work only if at least one SCP-173 is on the server. Else, the blink system work everytime. Note that it WILL NOT work if 'Distance Unit' is greater than 0.",
 				default = true,
 			},
+			--  sounds
 			{
 				type = "Category",
 				name = "Sounds",
