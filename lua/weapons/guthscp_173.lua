@@ -146,7 +146,7 @@ function SWEP:PrimaryAttack()
 			end
 
 			target:EmitSound( ( "physics/concrete/concrete_break%i.wav" ):format( math.random( 2, 3 ) ) )
-            util.ScreenShake( target:GetPos(), 5, 20, 1, 200 )
+			util.ScreenShake( target:GetPos(), 5, 20, 1, 200 )
 		end
 
 		self:SetNextPrimaryFire( CurTime() + guthscp.configs.guthscp173.break_cooldown )
