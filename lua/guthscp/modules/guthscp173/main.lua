@@ -238,10 +238,10 @@ MODULE.menu = {
 			guthscp.config.create_apply_button(),
 			guthscp.config.create_reset_button(),
 		},
-		parse = function( form )
+		parse = function( config )
 			if SERVER then
 				--  regenerate the blink counter if switched from arcade to realistic mode
-				if form.realistic_blink and not guthscp.configs.guthscp173.realistic_blink then
+				if config.realistic_blink and not guthscp.configs.guthscp173.realistic_blink then
 					for i, v in ipairs( player.GetAll() ) do
 						if guthscp.is_scp and guthscp.is_scp( v ) then continue end  --  don't count on SCPs
 						guthscp.modules.guthscp173.set_blink_counter( v, math.random( guthscp.configs.guthscp173.blink_maximum_count ) )
@@ -249,10 +249,10 @@ MODULE.menu = {
 				end
 
 				--  ajust blink update timer
-				timer.Adjust( "guthscp173:blink", form.blink_update_timer )
+				timer.Adjust( "guthscp173:blink", config.blink_update_timer )
 			end
 
-			form.distance_unit_sqr = form.distance_unit ^ 2
+			config.distance_unit_sqr = config.distance_unit ^ 2
 		end,
 	},
 	--  details
