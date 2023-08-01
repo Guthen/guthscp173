@@ -20,10 +20,7 @@ MODULE.menu = {
 	config = {
 		form = {
 			--  general
-			{
-				type = "Category",
-				name = "General",
-			},
+			"General",
 			{
 				type = "NumWang",
 				name = "Keycard Level",
@@ -76,10 +73,7 @@ MODULE.menu = {
 				default = true,
 			},
 			--  weapon
-			{
-				type = "Category",
-				name = "Weapon"
-			},
+			"Weapon",
 			{
 				type = "NumWang",
 				name = "Distance Unit",
@@ -119,10 +113,7 @@ MODULE.menu = {
 				decimals = 2
 			},
 			--  entity breaking
-			{
-				type = "Category",
-				name = "Entity Breaking",
-			},
+			"Entity Breaking",
 			{
 				type = "CheckBox",
 				name = "Breaking Enabled",
@@ -154,10 +145,7 @@ MODULE.menu = {
 				decimals = 0,
 			},
 			--  blink
-			{
-				type = "Category",
-				name = "Blink",
-			},
+			"Blink",
 			{
 				type = "NumWang",
 				name = "Maximum Count",
@@ -195,10 +183,7 @@ MODULE.menu = {
 				default = true,
 			},
 			--  sounds
-			{
-				type = "Category",
-				name = "Sounds",
-			},
+			"Sounds",
 			{
 				type = "TextEntry",
 				name = "Button Pressed",
