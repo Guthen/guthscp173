@@ -22,7 +22,7 @@ MODULE.menu = {
 			--  general
 			"General",
 			{
-				type = "NumWang",
+				type = "Number",
 				name = "Keycard Level",
 				id = "keycard_level",
 				desc = "Compatibility with my keycard system. Set a keycard level to SCP-173's swep",
@@ -38,35 +38,35 @@ MODULE.menu = {
 				end,
 			},
 			{
-				type = "CheckBox",
+				type = "Bool",
 				name = "Disable Jump",
 				id = "disable_jump",
 				desc = "Should SCP-173 be able to jump?",
 				default = true,
 			},
 			{
-				type = "CheckBox",
+				type = "Bool",
 				name = "Disable Directional Movement",
 				id = "disable_directional_movement",
 				desc = "Should SCP-173 be able to move around (forward, right, etc.)?",
 				default = true,
 			},
 			{
-				type = "CheckBox",
+				type = "Bool",
 				name = "Disable Teleport",
 				id = "disable_teleport",
 				desc = "If checked, teleporting system implemented in the SWEP is disabled, consider uncheck 'Disable Directional Movement' else it will be impossible to move",
 				default = false,
 			},
 			{
-				type = "CheckBox",
+				type = "Bool",
 				name = "Immortal",
 				id = "immortal",
 				desc = "If checked, SCP-173 can't take damage",
 				default = true,
 			},
 			{
-				type = "CheckBox",
+				type = "Bool",
 				name = "Disable NPC",
 				id = "disable_npc",
 				desc = "If unchecked, NPCs will neither blink nor freeze 173 even though looking at him",
@@ -75,21 +75,21 @@ MODULE.menu = {
 			--  weapon
 			"Weapon",
 			{
-				type = "NumWang",
+				type = "Number",
 				name = "Distance Unit",
 				id = "distance_unit",
 				desc = "Maximum distance where SCP-173 can moves and kills his targets. 1 meter ~= 40 unit",
 				default = 10 * 40, --  10 meter
 			},
 			{
-				type = "NumWang",
+				type = "Number",
 				name = "Attack Hull Size",
 				id = "attack_hull_size",
 				desc = "Size of tolerance for targeting in units. The higher the number, the easier it is to aim, but the less precise it is",
 				default = 5,
 			},
 			{
-				type = "NumWang",
+				type = "Number",
 				name = "Kill Cooldown",
 				id = "kill_cooldown",
 				desc = "Cooldown between kill requests (left click)",
@@ -97,7 +97,7 @@ MODULE.menu = {
 				decimals = 2
 			},
 			{
-				type = "NumWang",
+				type = "Number",
 				name = "Break Cooldown",
 				id = "break_cooldown",
 				desc = "Cooldown between entities breaks (left click)",
@@ -105,7 +105,7 @@ MODULE.menu = {
 				decimals = 2
 			},
 			{
-				type = "NumWang",
+				type = "Number",
 				name = "Teleport Cooldown",
 				id = "teleport_cooldown",
 				desc = "Cooldown between teleportation requests (right click)",
@@ -115,21 +115,21 @@ MODULE.menu = {
 			--  entity breaking
 			"Entity Breaking",
 			{
-				type = "CheckBox",
+				type = "Bool",
 				name = "Breaking Enabled",
 				id = "breaking_enabled",
 				desc = "If checked, SCP-173 can break doors and entities by left clicking on them",
 				default = false,
 			},
 			{
-				type = "NumWang",
+				type = "Number",
 				name = "Break Distance Unit",
 				id = "break_distance_unit",
 				desc = "Maximum distance where SCP-173 can breaks entities. Must be lower than 'Distance Unit' variable. 1 meter ~= 40 unit",
 				default = 100,
 			},
 			{
-				type = "NumWang",
+				type = "Number",
 				name = "Break Force Scale",
 				id = "break_force_scale",
 				desc = "Scale the breaking velocity force",
@@ -137,7 +137,7 @@ MODULE.menu = {
 				decimals = 2,
 			},
 			{
-				type = "NumWang",
+				type = "Number",
 				name = "Break Hit Count",
 				id = "break_hit_count",
 				desc = "Number of hits to finally break the entities",
@@ -147,14 +147,14 @@ MODULE.menu = {
 			--  blink
 			"Blink",
 			{
-				type = "NumWang",
+				type = "Number",
 				name = "Maximum Count",
 				id = "blink_maximum_count",
 				desc = "Maximum blink count used by the internal counter",
 				default = 10,
 			},
 			{
-				type = "NumWang",
+				type = "Number",
 				name = "Update Timer",
 				id = "blink_update_timer",
 				desc = "In seconds, the interval of time took to update the blink system. Each time, it decreases the blink counter by 1",
@@ -162,21 +162,21 @@ MODULE.menu = {
 				decimals = 2,
 			},
 			{
-				type = "NumWang",
+				type = "Number",
 				name = "Distance Unit",
 				id = "blink_distance_unit",
 				desc = "Maximum distance from a SCP-173 instance where you can blink (similar to SCP:SL's system). 0 to disable the distance condition. 1024 is a good value.",
 				default = 1024,
 			},
 			{
-				type = "CheckBox",
+				type = "Bool",
 				name = "Realistic Blink",
 				id = "realistic_blink",
 				desc = "If checked, changes the blink system to a realistic mode where every player have their own blink counter. Otherwise, it opts for an arcade system like SCP:SL where every player blink at the same time",
 				default = true,
 			},
 			{
-				type = "CheckBox",
+				type = "Bool",
 				name = "Need SCP-173",
 				id = "blink_need_scp_173",
 				desc = "If checked, the blink system will work only if at least one SCP-173 is on the server. Else, the blink system work everytime. Note that it WILL NOT work if 'Distance Unit' is greater than 0.",
@@ -185,21 +185,21 @@ MODULE.menu = {
 			--  sounds
 			"Sounds",
 			{
-				type = "TextEntry",
+				type = "String",
 				name = "Button Pressed",
 				id = "sound_button_pressed",
 				desc = "Sound played when SCP-173 press a button (e.g.: open a door)",
 				default = "guthen_scp/173/dooropen173.ogg",
 			},
 			{
-				type = "TextEntry",
+				type = "String",
 				name = "Moved",
 				id = "sound_moved",
 				desc = "Sound played when SCP-173 moves (e.g.: using his keyboard)",
 				default = "guthen_scp/173/stonedrag.ogg",
 			},
 			{
-				type = "TextEntry[]",
+				type = "String[]",
 				name = "Snapped Neck",
 				id = "sounds_snapped_neck",
 				desc = "Sound randomly played when SCP-173 snap the neck of someone",
@@ -210,7 +210,7 @@ MODULE.menu = {
 				},
 			},
 			{
-				type = "TextEntry[]",
+				type = "String[]",
 				name = "Teleported",
 				id = "sounds_teleported",
 				desc = "Sound randomly played when SCP-173 teleports",
