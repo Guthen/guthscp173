@@ -101,25 +101,11 @@ hook.Add( "PostDrawOpaqueRenderables", "guthscp173:new_pos", function()
 	preview_model:DrawModel()
 end )
 
---  replacement model: allow to update the looking angle only when not looked at
-local replace_model = ClientsideModel( "models/player/scp/173/scp.mdl" )
-replace_model:SetNoDraw( true )
-
 hook.Add( "PrePlayerDraw", "guthscp173:eye_angle", function( ply )
 	if not guthscp173.is_scp_173( ply ) then return end
 
 	--  force a specific angle
 	local angles = ply:GetNWAngle( "guthscp173:eye_angles", ply:EyeAngles() )
 	angles.p = 0
-
-	--  setup model
-	replace_model:SetRenderOrigin( ply:GetPos() )
-	replace_model:SetRenderAngles( angles )
-	replace_model:SetModel( ply:GetModel() )
-	replace_model:SetupBones()  --  allow to draw the model multiple times
-
-	--  draw model
-	replace_model:DrawModel()
-
-	return true
+	ply:SetRenderAngles( angles )
 end )
