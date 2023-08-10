@@ -83,7 +83,7 @@ hook.Add( "PostDrawOpaqueRenderables", "guthscp173:new_pos", function()
 
 	--	color
 	local pos, ang = next_position or tr.HitPos, Angle( 0, ply:GetAngles().y, 0 )
-	if ply:GetPos():DistToSqr( pos ) > guthscp.configs.guthscp173.distance_unit_sqr or not guthscp.world.is_ground( pos ) then 
+	if ply:GetPos():DistToSqr( pos ) > guthscp.configs.guthscp173.distance_unit_sqr or not guthscp173.can_teleport_to( ply, pos ) then 
 		render.SetColorModulation( .75, 0, 0 )
 	else
 		render.SetColorModulation( 0, .75, 0 )

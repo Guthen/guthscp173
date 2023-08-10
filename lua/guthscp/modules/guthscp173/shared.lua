@@ -1,4 +1,5 @@
 local guthscp173 = guthscp.modules.guthscp173
+local config = guthscp.configs.guthscp173
 
 --  scps filter
 guthscp173.filter = guthscp.players_filter:new( "guthscp173" )
@@ -82,6 +83,13 @@ function guthscp173.player_attack_trace( ply )
 			guthscp.configs.guthscp173.attack_hull_size 
 		) 
 	)
+end
+
+function guthscp173.can_teleport_to( ply, pos )
+	if not guthscp.world.is_ground( pos ) then return false end
+	if config.safe_teleport and guthscp.world.safe_entity_trace( ply, pos ).Hit then return false end
+	
+	return true
 end
 
 --  handle movement

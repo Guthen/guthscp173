@@ -49,7 +49,7 @@ MODULE.menu = {
 				name = "Disable Directional Movement",
 				id = "disable_directional_movement",
 				desc = "Should SCP-173 be able to move around (forward, right, etc.)?",
-				default = true,
+				default = false,
 			},
 			{
 				type = "Bool",
@@ -57,6 +57,13 @@ MODULE.menu = {
 				id = "disable_teleport",
 				desc = "If checked, teleporting system implemented in the SWEP is disabled, consider uncheck 'Disable Directional Movement' else it will be impossible to move",
 				default = false,
+			},
+			{
+				type = "Bool",
+				name = "Safe Teleport",
+				id = "safe_teleport",
+				desc = "If enabled, do an extra check before teleporting SCP-173 to ensure a safe placement. This mostly avoids teleporting in walls but can have side effects such as preventing to climb stairs. Consider disabling 'Disable Directional Movement' to counter these side effects",
+				default = true,
 			},
 			{
 				type = "Bool",

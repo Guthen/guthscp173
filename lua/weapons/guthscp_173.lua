@@ -170,7 +170,8 @@ function SWEP:SecondaryAttack()
 
 	--  check trace pos validity
 	local pos = ply:GetEyeTrace().HitPos
-	if ply:GetPos():DistToSqr( pos ) > guthscp.configs.guthscp173.distance_unit_sqr or not guthscp.world.is_ground( pos ) then return end
+	if ply:GetPos():DistToSqr( pos ) > guthscp.configs.guthscp173.distance_unit_sqr then return end
+	if not guthscp173.can_teleport_to( ply, pos ) then return end
 
 	if guthscp173.is_scp_173_looked( ply ) then 
 		--  schedule next position
@@ -184,7 +185,7 @@ function SWEP:SecondaryAttack()
 	end
 
 	--  cooldown
-	self.Weapon:SetNextSecondaryFire( CurTime() + guthscp.configs.guthscp173.teleport_cooldown )
+	self:SetNextSecondaryFire( CurTime() + guthscp.configs.guthscp173.teleport_cooldown )
 end
 
 function SWEP:Reload()
