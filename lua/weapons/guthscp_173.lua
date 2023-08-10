@@ -71,7 +71,16 @@ end
 
 local function kill_target( ply, target )
 	ply:SetPos( target:GetPos() - ( target:GetPos() - ply:GetPos() ):GetNormalized() * 15 )
-	target:TakeDamage( math.huge, ply, ply:GetActiveWeapon() )
+
+	--  damage
+	local info = DamageInfo()
+	info:SetDamage( math.huge )
+	info:SetAttacker( ply )
+	info:SetDamageType( DMG_CRUSH )
+	info:SetDamagePosition( ply:GetPos() )
+	info:SetInflictor( ply:GetActiveWeapon() )
+	target:TakeDamageInfo( info )
+
 	target:EmitSound( guthscp.configs.guthscp173.sounds_snapped_neck[math.random( #guthscp.configs.guthscp173.sounds_snapped_neck )] )
 	
 	if ply.guthscp173_next_target then
