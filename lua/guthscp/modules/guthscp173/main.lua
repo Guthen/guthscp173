@@ -62,7 +62,7 @@ MODULE.menu = {
 				type = "Bool",
 				name = "Safe Teleport",
 				id = "safe_teleport",
-				desc = "If enabled, do an extra check before teleporting SCP-173 to ensure a safe placement. This mostly avoids teleporting in walls but can have side effects such as preventing to climb stairs. Consider disabling 'Disable Directional Movement' to counter these side effects",
+				desc = "If enabled, do an extra check before teleporting SCP-173 to ensure a safe placement. This mostly avoids teleporting in walls but can have side effects such as preventing to climb stairs and slopes. Consider disabling 'Disable Directional Movement' as a work-around",
 				default = true,
 			},
 			{
@@ -186,7 +186,7 @@ MODULE.menu = {
 				type = "Bool",
 				name = "Need SCP-173",
 				id = "blink_need_scp_173",
-				desc = "If checked, the blink system will work only if at least one SCP-173 is on the server. Else, the blink system work everytime. Note that it WILL NOT work if 'Distance Unit' is greater than 0.",
+				desc = "If checked, the blink system will work only if at least one SCP-173 is on the server.",
 				default = true,
 			},
 			--  sounds
@@ -202,14 +202,14 @@ MODULE.menu = {
 				type = "String",
 				name = "Moved",
 				id = "sound_moved",
-				desc = "Sound played when SCP-173 moves (e.g.: using his keyboard)",
+				desc = "Sound played when SCP-173 moves (i.e. directional movement using keyboard)",
 				default = "guthen_scp/173/stonedrag.ogg",
 			},
 			{
 				type = "String[]",
 				name = "Snapped Neck",
 				id = "sounds_snapped_neck",
-				desc = "Sound randomly played when SCP-173 snap the neck of someone",
+				desc = "Sound randomly played when SCP-173 snap the neck of someone (i.e. killing someone)",
 				default = {
 					"guthen_scp/173/necksnap1.ogg",
 					"guthen_scp/173/necksnap2.ogg",
