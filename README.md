@@ -37,7 +37,7 @@ Contains a SWEP, of class `guthscp_173`, designed for multiplayer:
 
 ## Known Issues
 ### "This addon doesn't work!"
-Be sure to have installed [[SCP] Guthen's Addons Base](https://steamcommunity.com/sharedfiles/filedetails/?id=2139692777) on your server. Verify that you can open the configuration menu with `guthscp_menu` in your game console.
+Be sure to have installed [[GuthSCP] Base](https://steamcommunity.com/sharedfiles/filedetails/?id=3034737316) on your server. Verify that you can open the configuration menu with `guthscp_menu` in your game console.
 
 Then, be sure that you did well configured the SCP Teams in the config menu (`guthscp_menu` in your game's console), a SCP Team won't trigger SCP-173 behaviour.
 
