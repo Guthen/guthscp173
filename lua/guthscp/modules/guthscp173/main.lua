@@ -74,10 +74,10 @@ MODULE.menu = {
 			},
 			{
 				type = "Bool",
-				name = "Disable NPC",
-				id = "disable_npc",
-				desc = "If unchecked, NPCs will neither blink nor freeze 173 even though looking at him",
-				default = true,
+				name = "NPC Support",
+				id = "npc_support",
+				desc = "If checked, NPCs will be able to blink and freeze SCP-173",
+				default = false,
 			},
 			--  weapon
 			"Weapon",

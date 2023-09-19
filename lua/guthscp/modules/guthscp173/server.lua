@@ -22,7 +22,7 @@ hook.Add( "Think", "guthscp173:think", function()
 		end
 
 		--  check npcs looking at him
-		if not guthscp.configs.guthscp173.disable_npc and not should_freeze then
+		if guthscp.configs.guthscp173.npc_support and not should_freeze then
 			for i, npc in ipairs( guthscp.get_npcs() ) do
 				if npc:Health() <= 0 then continue end
 				if not guthscp173.is_looking_at( npc, v ) or guthscp173.is_blinking( npc ) then continue end
@@ -110,7 +110,7 @@ timer.Create( "guthscp173:blink", .5, 0, function()
 	end
 
 	--  blink on npcs
-	if not guthscp.configs.guthscp173.disable_npc then
+	if guthscp.configs.guthscp173.npc_support then
 		for _, npc in ipairs( guthscp.get_npcs() ) do
 			if npc:Health() <= 0 then continue end
 
