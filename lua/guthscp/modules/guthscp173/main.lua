@@ -227,8 +227,6 @@ MODULE.menu = {
 					"guthen_scp/173/rattle3.ogg",
 				},
 			},
-			guthscp.config.create_apply_button(),
-			guthscp.config.create_reset_button(),
 		},
 		parse = function( config )
 			if SERVER then
