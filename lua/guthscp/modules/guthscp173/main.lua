@@ -1,7 +1,7 @@
 local MODULE = {
 	name = "SCP-173",
 	author = "Guthen",
-	version = "2.0.1-beta",
+	version = "2.0.2",
 	description = [[Be SCP-173 and snap the necks of people!]],
 	icon = "icon16/eye.png",
 	version_url = "https://raw.githubusercontent.com/Guthen/guthscp173/update-to-guthscpbase-remaster/lua/guthscp/modules/guthscp173/main.lua",
@@ -286,6 +286,15 @@ MODULE.menu = {
 function MODULE:init()
 	--  porting old config file 
 	self:port_old_config_file( "guthscpbase/vkxscp173.json" )
+
+	--  warn for old version
+	timer.Simple( 0, function()
+		if weapons.GetStored( "vkx_scp_173" ) then
+			local text = "The old version of this addon is currently running on this server. Please, delete the '[SCP] Enhanced SCP-173' addon to avoid any possible conflicts."
+			self:add_error( text )
+			self:error( text )
+		end
+	end )
 end
 
 guthscp.module.hot_reload( "guthscp173" )
