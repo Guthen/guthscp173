@@ -4,7 +4,7 @@ local MODULE = {
 	version = "2.0.2",
 	description = [[Be SCP-173 and snap the necks of people!]],
 	icon = "icon16/eye.png",
-	version_url = "https://raw.githubusercontent.com/Guthen/guthscp173/update-to-guthscpbase-remaster/lua/guthscp/modules/guthscp173/main.lua",
+	version_url = "https://raw.githubusercontent.com/Guthen/guthscp173/master/lua/guthscp/modules/guthscp173/main.lua",
 	dependencies = {
 		base = "2.0.0",
 	},
