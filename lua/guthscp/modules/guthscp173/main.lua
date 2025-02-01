@@ -140,7 +140,7 @@ MODULE.menu = {
 				name = "Break Force Scale",
 				id = "break_force_scale",
 				desc = "Scale the breaking velocity force",
-				default = .2,
+				default = 0.2,
 				decimals = 2,
 			},
 			{
@@ -165,7 +165,7 @@ MODULE.menu = {
 				name = "Update Timer",
 				id = "blink_update_timer",
 				desc = "In seconds, the interval of time took to update the blink system. Each time, it decreases the blink counter by 1",
-				default = .5,
+				default = 0.5,
 				decimals = 2,
 			},
 			{

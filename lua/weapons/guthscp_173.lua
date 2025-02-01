@@ -192,7 +192,7 @@ function SWEP:Reload()
 	if self.NextReloadTime and self.NextReloadTime >= CurTime() then return end
 
 	self.ShowDestinationHUD = not self.ShowDestinationHUD
-	self.NextReloadTime = CurTime() + .5
+	self.NextReloadTime = CurTime() + 0.5
 end
 
 function SWEP:Think()
@@ -232,7 +232,7 @@ if CLIENT then
 		if not IsValid( ply ) then return end	
 		if not guthscp173.is_scp_173_looked( ply ) then return end
 
-		draw.SimpleTextOutlined( "Looked at", "ScoreboardDefaultTitle", ScrW() / 2, ScrH() * .85, team.GetColor( ply:Team() ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 3, color_black )
+		draw.SimpleTextOutlined( "Looked at", "ScoreboardDefaultTitle", ScrW() / 2, ScrH() * 0.85, team.GetColor( ply:Team() ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 3, color_black )
 	end
 
 	--  add to spawnmenu

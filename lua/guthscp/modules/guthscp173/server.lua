@@ -67,7 +67,7 @@ end )
 
 --  HUD blink
 local global_blink_count = 0
-timer.Create( "guthscp173:blink", .5, 0, function()
+timer.Create( "guthscp173:blink", 0.5, 0, function()
 	--  refresh list
 	scps_173 = guthscp173.get_scps_173()
 
@@ -104,7 +104,7 @@ timer.Create( "guthscp173:blink", .5, 0, function()
 			end
 
 			if can_blink then
-				ply:ScreenFade( SCREENFADE.IN, Color( 0, 0, 0 ), .1, guthscp.configs.guthscp173.blink_update_timer )
+				ply:ScreenFade( SCREENFADE.IN, Color( 0, 0, 0 ), 0.1, guthscp.configs.guthscp173.blink_update_timer )
 			end
 		end
 	end

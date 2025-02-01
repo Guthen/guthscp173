@@ -59,7 +59,7 @@ hook.Add( "PlayerFootstep", "guthscp173:sound", function( ply )
 	end
 
 	--  stop sound after some time (reset the timer each time it walks)
-	timer.Create( "guthscp173:footstep_sound" .. ( ply:AccountID() or ply:EntIndex() ), .35, 1, function()
+	timer.Create( "guthscp173:footstep_sound" .. ( ply:AccountID() or ply:EntIndex() ), 0.35, 1, function()
 		guthscp.sound.stop( ply, guthscp.configs.guthscp173.sound_moved )
 	end )
 	return true
@@ -84,13 +84,13 @@ hook.Add( "PostDrawOpaqueRenderables", "guthscp173:new_pos", function()
 	--	color
 	local pos, ang = next_position or tr.HitPos, Angle( 0, ply:GetAngles().y, 0 )
 	if ply:GetPos():DistToSqr( pos ) > guthscp.configs.guthscp173.distance_unit_sqr or not guthscp173.can_teleport_to( ply, pos ) then 
-		render.SetColorModulation( .75, 0, 0 )
+		render.SetColorModulation( 0.75, 0, 0 )
 	else
-		render.SetColorModulation( 0, .75, 0 )
+		render.SetColorModulation( 0, 0.75, 0 )
 	end
 
 	--	alpha
-	render.SetBlend( .1 )
+	render.SetBlend( 0.1 )
 
 	--	setup model
 	preview_model:SetRenderOrigin( next_position or pos )
