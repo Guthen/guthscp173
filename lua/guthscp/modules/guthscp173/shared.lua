@@ -5,6 +5,8 @@ local config = guthscp.configs.guthscp173
 guthscp173.filter = guthscp.players_filter:new( "guthscp173" )
 guthscp173.filter_131 = guthscp.players_filter:new( "guthscp131" )
 if SERVER then
+	-- scp 173 swep
+
 	guthscp173.filter:listen_disconnect()
 	guthscp173.filter:listen_weapon_users( "guthscp_173" )  --  being SCP-173 just mean a player having the weapon 
 
@@ -12,8 +14,16 @@ if SERVER then
 		ply:SetNWBool( "guthscp173:looked", false )
 	end )
 
+	-- scp 131 swep
+
 	guthscp173.filter_131:listen_disconnect()
 	guthscp173.filter_131:listen_weapon_users( "guthscp_131" )  --  being SCP-173 just mean a player having the weapon 
+	guthscp173.filter_131.event_added:add_listener( "guthscp131:setup", function( ply )
+		--  speeds
+		ply:SetSlowWalkSpeed( config.walk_speed_scp131 )
+		ply:SetWalkSpeed( config.walk_speed_scp131 )
+		ply:SetRunSpeed( config.run_speed_scp131 )
+	end )
 end
 
 function guthscp173.get_scps_173()
@@ -30,11 +40,11 @@ function guthscp173.is_scp_173( ply )
 end
 
 -- 131 functions
+
 function guthscp173.get_scps_131()
 	return guthscp173.filter_131:get_entities()
 end
 
---  functions
 function guthscp173.is_scp_131( ply )
 	if CLIENT and ply == nil then
 		ply = LocalPlayer() 
@@ -42,6 +52,8 @@ function guthscp173.is_scp_131( ply )
 
 	return guthscp173.filter_131:is_in( ply )
 end
+
+-- end 131 functions
 
 function guthscp173.is_scp_173_looked( ply )
 	return ply:GetNWBool( "guthscp173:looked", false )
