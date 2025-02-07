@@ -189,6 +189,22 @@ MODULE.menu = {
 				desc = "If checked, the blink system will work only if at least one SCP-173 is on the server.",
 				default = true,
 			},
+			-- 	SCP 131 related
+			"SCP 131",
+			{
+				type = "Number",
+				name = "Walk Speed",
+				id = "walk_speed_scp131",
+				desc = "Speed of walking for SCP-131, in hammer units",
+				default = 150,
+			},
+			{
+				type = "Number",
+				name = "Run Speed",
+				id = "run_speed_scp131",
+				desc = "Speed of running for SCP-131, in hammer units",
+				default = 210,
+			},
 			--  sounds
 			"Sounds",
 			{

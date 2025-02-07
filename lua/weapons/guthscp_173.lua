@@ -117,6 +117,7 @@ function SWEP:PrimaryAttack()
 	--  kill target
 	if target:IsPlayer() or target:IsNPC() or target:IsNextBot() then
 		if guthscp.is_scp( target ) then return end
+		if guthscp173.is_scp_131( target ) then return end
 
 		if target:Health() > 0 then --  not using Player/Alive caused not existing on NPCs
 			if guthscp173.is_scp_173_looked( ply ) then

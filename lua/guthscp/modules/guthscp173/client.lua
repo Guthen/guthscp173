@@ -33,6 +33,7 @@ hook.Add( "PreDrawHalos", "guthscp173:hud", function()
 		if v == ply then continue end 
 		if not ( v:IsPlayer() and v:Alive() ) and not ( ( v:IsNPC() or v:IsNextBot() ) and v:Health() >= 0 ) then continue end
 		if guthscp.is_scp( v ) then continue end
+		if guthscp173.is_scp_131( v ) then continue end
 
 		if not ( v == target ) and not ( v == choose_target ) then
 			--  draw potential target

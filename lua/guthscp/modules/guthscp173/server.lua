@@ -14,7 +14,7 @@ hook.Add( "Think", "guthscp173:think", function()
 		for _, ply in ipairs( player.GetAll() ) do
 			if ply == v then continue end
 			if not ply:Alive() then continue end
-			if guthscp.is_scp and guthscp.is_scp( ply ) then continue end
+			if guthscp.is_scp and guthscp.is_scp( ply ) and not guthscp173.is_scp_131( ply ) then continue end
 			if guthscp173.is_blinking( ply ) or not guthscp173.is_looking_at( ply, v ) then continue end
 
 			should_freeze = true
@@ -84,7 +84,7 @@ timer.Create( "guthscp173:blink", 0.5, 0, function()
 	--  blink on players
 	for _, ply in ipairs( player.GetAll() ) do
 		if not ply:Alive() then continue end
-		if guthscp173.is_scp_173( ply ) or guthscp.is_scp( ply ) then continue end  --  don't count on SCPs
+		if guthscp173.is_scp_173( ply ) or guthscp.is_scp( ply ) or guthscp173.is_scp_131( ply ) then continue end  --  don't count on SCPs
 
 		--  apply counter
 		guthscp173.set_blink_counter( ply, is_global_blink and global_blink_count or ( guthscp173.get_blink_counter( ply ) - 1 ) % max_blink_count )
