@@ -1,12 +1,13 @@
 local MODULE = {
 	name = "SCP-173",
 	author = "Guthen",
-	version = "2.0.3",
+	version = "2.0.4",
 	description = [[Be SCP-173 and snap the necks of people!]],
 	icon = "icon16/eye.png",
 	version_url = "https://raw.githubusercontent.com/Guthen/guthscp173/master/lua/guthscp/modules/guthscp173/main.lua",
 	dependencies = {
-		base = "2.2.0",
+		base = "2.5.0",
+		guthscpkeycard = "optional:2.0.0",
 	},
 	requires = {
 		["shared.lua"] = guthscp.REALMS.SHARED,
@@ -30,7 +31,7 @@ MODULE.menu = {
 				min = 0,
 				max = function( self, numwang )
 					if self:is_disabled() then return 0 end
-					
+
 					return guthscp.modules.guthscpkeycard.max_keycard_level
 				end,
 				is_disabled = function( self, numwang )
