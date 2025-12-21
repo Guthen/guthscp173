@@ -35,6 +35,58 @@ Contains a SWEP, of class `guthscp_173`, designed for multiplayer:
 + [[SCP] HUD by Guthen](https://steamcommunity.com/sharedfiles/filedetails/?id=1613150311)
 + [Flat HUD](https://steamcommunity.com/sharedfiles/filedetails/?id=2293300406) (also by me)
 
+## Hooks
+
+### `guthscp173:can_freeze_173( ent, scp )`
+Called every frame for each player and NPC, and for each SCP-173.
+
+Return `true` to allow the entity to freeze SCP-173, `false` to disallow it, and `nil` for default behavior.
+
+> [!NOTE]
+> The return value of the hook will NOT directly decide on whether SCP-173 is frozen or not. There are other conditions - such as, is the entity blinking, or is it looking to the target - that are evaluated only after this hook returned `nil` or `true`, hence the "can" in the name.
+
+> [!CAUTION] 
+> As it is called on a O(n*k) basis every frame, you should be aware of how intensive is your code.
+
+Parameters:
++ `ent` is either a player or a NPC (if 'NPC Support' is enabled)
++ `scp` is the SCP-173 target 
+
+Example:
+```lua
+hook.Add( "guthscp173:can_freeze_173", "test", function( ent, scp )
+    if ent:IsPlayer() and ent:Team() == TEAM_HOBO then
+        -- Here, the hobo team is not able to freeze SCP-173, no matter what.
+        return false
+    end
+end )
+```
+
+### `guthscp173:should_blink( ent )`
+
+Called every blink update (depends on configuration variable **'Update Timer'** of the blink system; by default, every 0.5s) for each player and NPC (if **'NPC Support'** is enabled).
+
+Return `true` to allow updating the blink counter of this entity, `false` to prevent it, and `nil` for default behavior.
+
+> [!NOTE]
+> The return value of the hook will directly decide on whether the blink is updated or not, hence the "should" in the name.
+
+> [!CAUTION]
+> As it is called on a O(n) basis every half second, you should be aware of how intensive is your code.
+
+Parameters:
++ `ent` is either a player or a NPC (if **'NPC Support'** is enabled).
+
+Example:
+```lua
+hook.Add( "guthscp173:should_blink", "test", function( ent )
+    if ent:IsPlayer() and ent:Team() == TEAM_HOBO then
+        -- Here, the hobo team is not able to blink, no matter what.
+        return false
+    end
+end )
+```
+
 ## Known Issues
 ### "This addon doesn't work!"
 Be sure to have installed [[GuthSCP] Base](https://steamcommunity.com/sharedfiles/filedetails/?id=3034737316) on your server. Verify that you can open the configuration menu with `guthscp_menu` in your game console.
