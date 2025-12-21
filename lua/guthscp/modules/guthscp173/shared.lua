@@ -19,7 +19,7 @@ end
 --  functions
 function guthscp173.is_scp_173( ply )
 	if CLIENT and ply == nil then
-		ply = LocalPlayer() 
+		ply = LocalPlayer()
 	end
 
 	return guthscp173.filter:is_in( ply )
@@ -31,12 +31,12 @@ end
 
 function guthscp173.is_looking_at( ply, ent )
 	if not IsValid( ply ) then return false end
-	if not ply:IsPlayer() then 
+	if not ply:IsPlayer() then
 		--  implementation for NPCs & NextBots
 		if CLIENT then
 			return false
 		end
-	end  
+	end
 
 	--  get target bounds
 	local pos = ent:GetPos()
@@ -65,7 +65,7 @@ function guthscp173.get_blink_counter( ply )
 	local blink_counter = ply:GetNWInt( "guthscp173:blink_counter", nil )
 
 	--  initialize counter
-	if not blink_counter then 
+	if not blink_counter then
 		guthscp173.set_blink_counter( math.random( guthscp.configs.guthscp173.blink_maximum_count ) )
 		return guthscp173.get_blink_counter()
 	end
@@ -74,21 +74,21 @@ function guthscp173.get_blink_counter( ply )
 end
 
 function guthscp173.player_attack_trace( ply )
-	return guthscp.world.player_trace_attack( 
-		ply, 
-		guthscp.configs.guthscp173.distance_unit, 
-		Vector( 
-			guthscp.configs.guthscp173.attack_hull_size, 
-			guthscp.configs.guthscp173.attack_hull_size, 
-			guthscp.configs.guthscp173.attack_hull_size 
-		) 
+	return guthscp.world.player_trace_attack(
+		ply,
+		guthscp.configs.guthscp173.distance_unit,
+		Vector(
+			guthscp.configs.guthscp173.attack_hull_size,
+			guthscp.configs.guthscp173.attack_hull_size,
+			guthscp.configs.guthscp173.attack_hull_size
+		)
 	)
 end
 
 function guthscp173.can_teleport_to( ply, pos )
 	if not guthscp.world.is_ground( pos ) then return false end
 	if config.safe_teleport and guthscp.world.safe_entity_trace( ply, pos ).Hit then return false end
-	
+
 	return true
 end
 
