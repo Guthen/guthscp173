@@ -82,7 +82,7 @@ local function kill_target( ply, target )
 	target:TakeDamageInfo( info )
 
 	target:EmitSound( guthscp.configs.guthscp173.sounds_snapped_neck[math.random( #guthscp.configs.guthscp173.sounds_snapped_neck )] )
-	
+
 	if ply.guthscp173_next_target then
 		send_target( ply ) --  erase target
 
@@ -101,7 +101,7 @@ local function move_at( ply, pos )
 
 		ply.guthscp173_next_position = nil
 	end
-	
+
 	ply:SetNWAngle( "guthscp173:eye_angles", ply:EyeAngles() )
 end
 
@@ -127,7 +127,7 @@ function SWEP:PrimaryAttack()
 			else
 				kill_target( ply, target )
 			end
-			
+
 			self:SetNextPrimaryFire( CurTime() + guthscp.configs.guthscp173.kill_cooldown )
 		end
 	--  break entities
@@ -173,7 +173,7 @@ function SWEP:SecondaryAttack()
 	if ply:GetPos():DistToSqr( pos ) > guthscp.configs.guthscp173.distance_unit_sqr then return end
 	if not guthscp173.can_teleport_to( ply, pos ) then return end
 
-	if guthscp173.is_scp_173_looked( ply ) then 
+	if guthscp173.is_scp_173_looked( ply ) then
 		--  schedule next position
 		send_position( ply, pos )
 
@@ -203,9 +203,9 @@ function SWEP:Think()
 
 	if IsValid( ply.guthscp173_next_target ) then
 		--  cancel if too far
-		if ply.guthscp173_next_target:GetPos():DistToSqr( ply:GetPos() ) > guthscp.configs.guthscp173.distance_unit_sqr then 
+		if ply.guthscp173_next_target:GetPos():DistToSqr( ply:GetPos() ) > guthscp.configs.guthscp173.distance_unit_sqr then
 			send_target( ply, nil )  --  erase target
-			
+
 			ply.guthscp173_next_target = nil
 			return
 		end
@@ -214,7 +214,7 @@ function SWEP:Think()
 		kill_target( ply, ply.guthscp173_next_target )
 	elseif ply.guthscp173_next_position then
 		--  cancel if too far
-		if ply.guthscp173_next_position:DistToSqr( ply:GetPos() ) > guthscp.configs.guthscp173.distance_unit_sqr then 
+		if ply.guthscp173_next_position:DistToSqr( ply:GetPos() ) > guthscp.configs.guthscp173.distance_unit_sqr then
 			send_position( ply, nil )  --  erase position
 
 			ply.guthscp173_next_position = nil

@@ -1,7 +1,7 @@
 local MODULE = {
 	name = "SCP-173",
 	author = "Guthen",
-	version = "2.0.4",
+	version = "2.1.0",
 	description = [[Be SCP-173 and snap the necks of people!]],
 	icon = "icon16/eye.png",
 	version_url = "https://raw.githubusercontent.com/Guthen/guthscp173/master/lua/guthscp/modules/guthscp173/main.lua",
@@ -78,6 +78,13 @@ MODULE.menu = {
 				name = "NPC Support",
 				id = "npc_support",
 				desc = "If checked, NPCs will be able to blink and freeze SCP-173",
+				default = false,
+			},
+			{
+				type = "Bool",
+				name = "Enable SCPs Freeze",
+				id = "freeze_enable_scps",
+				desc = "If checked, 'SCP Teams' defined in the Base configuration will be able to freeze SCP-173 as other players.",
 				default = false,
 			},
 			--  weapon
@@ -190,6 +197,13 @@ MODULE.menu = {
 				desc = "If checked, the blink system will work only if at least one SCP-173 is on the server.",
 				default = true,
 			},
+			{
+				type = "Bool",
+				name = "Enable SCPs Blink",
+				id = "blink_enable_scps",
+				desc = "If checked, the blink system will also affect 'SCP Teams' defined in the Base configuration.",
+				default = false,
+			},
 			--  sounds
 			"Sounds",
 			{
@@ -234,8 +248,12 @@ MODULE.menu = {
 				--  regenerate the blink counter if switched from arcade to realistic mode
 				if config.realistic_blink and not guthscp.configs.guthscp173.realistic_blink then
 					for i, v in ipairs( player.GetAll() ) do
-						if guthscp.is_scp and guthscp.is_scp( v ) then continue end  --  don't count on SCPs
-						guthscp.modules.guthscp173.set_blink_counter( v, math.random( guthscp.configs.guthscp173.blink_maximum_count ) )
+						if not config.blink_enable_scps and guthscp.is_scp( v ) then continue end  --  don't count on SCPs
+
+						-- we need to generate a number from 1 so players that can't blink (with the new hook),
+						-- won't be indefinitely stuck in a blink mode (if the counter stays at 0; see guthscp173.is_blinking)
+						local new_blink_counter = math.random( 1, guthscp.configs.guthscp173.blink_maximum_count )
+						guthscp.modules.guthscp173.set_blink_counter( v, new_blink_counter )
 					end
 				end
 
